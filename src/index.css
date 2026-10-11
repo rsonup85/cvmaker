@@ -193,3 +193,30 @@ button {
 #resume-document .text-2xl { font-size: calc(24px * var(--resume-font-scale, 1)) !important; }
 #resume-document .text-3xl { font-size: calc(30px * var(--resume-font-scale, 1)) !important; }
 #resume-document .text-4xl { font-size: calc(36px * var(--resume-font-scale, 1)) !important; }
+
+
+/* ============================================================
+   MOBILE PROFESSIONAL WORKSPACE
+   Keeps the editor touch-first without changing A4/PDF geometry.
+   ============================================================ */
+@media (max-width: 1023px) {
+  html, body, #root {
+    width: 100%;
+    overflow: hidden;
+  }
+  button, input, textarea, select {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+  textarea {
+    overscroll-behavior: contain;
+  }
+}
+@supports (padding: max(0px)) {
+  .mobile-workspace-safe-bottom {
+    padding-bottom: max(5.5rem, calc(5.5rem + env(safe-area-inset-bottom)));
+  }
+}

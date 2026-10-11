@@ -7,6 +7,7 @@ import { DownloadModal } from "./components/DownloadModal";
 import { DesignSettings, DEFAULT_DESIGN, designToStyle, getPageDims } from "./components/DesignSettings";
 import { NavbarLogo } from "./components/NavbarLogo";
 import { RichTextEditor } from "./components/RichTextEditor";
+import { AiCopilot } from "./components/AiCopilot";
 import {
   AiEnhanceBar,
   RoleTuneCard,
@@ -46,6 +47,8 @@ import {
   ArrowRight,
   ArrowLeft,
   Check,
+  Sparkles,
+  Menu,
 } from "lucide-react";
 
 
@@ -78,6 +81,7 @@ export default function App() {
   const { adminOpen, closeAdmin, onLogoClick } = useAdminTrigger();
   const [activeTab, setActiveTab] = useState("personal");
   const [mobileTab, setMobileTab] = useState("content");
+  const [aiPanelOpen, setAiPanelOpen] = useState(false);
   const [lang, setLangState] = useState(() => getLang());
   const t = (key) => tr(lang, key);
   const toggleLang = () => {
@@ -396,6 +400,12 @@ export default function App() {
 
   const selectedTpl = TEMPLATES_CONFIG.find((t) => t.id === selectedTemplateId);
   const supportsPhoto = !!selectedTpl;
+
+  const applyAiPatch = (patch) => {
+    setResumeData((prev) => ({ ...prev, ...(patch || {}) }));
+    setSavedToast("AI changes applied ✓");
+    window.setTimeout(() => setSavedToast(""), 2200);
+  };
 
 
   const handleDownloadPDF = async (isPro, verifiedPayment = null) => {
@@ -717,6 +727,13 @@ export default function App() {
         <div className="flex items-center gap-2">
           <button
             type="button"
+            onClick={() => setAiPanelOpen((v) => !v)}
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-violet-200 bg-violet-50 text-violet-700 text-xs font-bold hover:bg-violet-100 min-h-[40px]"
+          >
+            <Sparkles size={14} /> AI Copilot
+          </button>
+          <button
+            type="button"
             onClick={toggleLang}
             className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 text-[11px] font-bold hover:bg-slate-50"
             title={t("langHint")}
@@ -736,37 +753,17 @@ export default function App() {
       {/* Main Workspace */}
       <div className="flex flex-1 overflow-hidden relative">
         {/* Mobile Nav Tabs */}
-        <div className="lg:hidden absolute top-0 left-0 right-0 bg-white border-b z-30 flex justify-around gap-1 p-2 text-[11px] sm:text-xs font-bold shadow-sm safe-area-top">
-          <button
-            onClick={() => setMobileTab("sidebar")}
-            className={`flex-1 px-2 py-2.5 rounded-xl transition flex flex-col items-center gap-0.5 min-h-[44px] ${
-              mobileTab === "sidebar" ? "bg-blue-50 text-blue-600" : "text-slate-600"
-            }`}
-          >
-            <span>{t("menu")}</span>
-          </button>
-          <button
-            onClick={() => setMobileTab("content")}
-            className={`flex-1 px-2 py-2.5 rounded-xl transition flex flex-col items-center gap-0.5 min-h-[44px] ${
-              mobileTab === "content" ? "bg-blue-50 text-blue-600" : "text-slate-600"
-            }`}
-          >
-            <span>{t("edit")}</span>
-          </button>
-          <button
-            onClick={() => setMobileTab("preview")}
-            className={`flex-1 px-2 py-2.5 rounded-xl transition flex flex-col items-center gap-0.5 min-h-[44px] ${
-              mobileTab === "preview" ? "bg-blue-50 text-blue-600" : "text-slate-600"
-            }`}
-          >
-            <span>{t("preview")}</span>
-          </button>
+        <div className="lg:hidden fixed left-0 right-0 bottom-0 bg-white/95 backdrop-blur border-t border-slate-200 z-[60] grid grid-cols-4 gap-1 px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(15,23,42,.08)]">
+          <button type="button" onClick={() => { setAiPanelOpen(false); setMobileTab("sidebar"); }} className={`min-h-[52px] rounded-xl text-[10px] font-bold flex flex-col items-center justify-center gap-1 ${mobileTab === "sidebar" ? "bg-slate-100 text-slate-900" : "text-slate-500"}`}><Menu size={17} />Menu</button>
+          <button type="button" onClick={() => { setAiPanelOpen(false); setMobileTab("content"); }} className={`min-h-[52px] rounded-xl text-[10px] font-bold flex flex-col items-center justify-center gap-1 ${mobileTab === "content" ? "bg-blue-50 text-blue-700" : "text-slate-500"}`}><Edit3 size={17} />Edit</button>
+          <button type="button" onClick={() => { setAiPanelOpen(false); setMobileTab("preview"); }} className={`min-h-[52px] rounded-xl text-[10px] font-bold flex flex-col items-center justify-center gap-1 ${mobileTab === "preview" ? "bg-slate-100 text-slate-900" : "text-slate-500"}`}><Eye size={17} />Preview</button>
+          <button type="button" onClick={() => { setAiPanelOpen(false); setMobileTab("ai"); }} className={`min-h-[52px] rounded-xl text-[10px] font-bold flex flex-col items-center justify-center gap-1 ${mobileTab === "ai" ? "bg-violet-50 text-violet-700" : "text-slate-500"}`}><Sparkles size={17} />AI</button>
         </div>
 
         {/* Panel 1: Left Navigation Sidebar */}
         <aside
           className={`w-full lg:w-60 bg-white border-r border-slate-200 p-4 overflow-y-auto lg:block shrink-0 ${
-            mobileTab === "sidebar" ? "block pt-12" : "hidden"
+            mobileTab === "sidebar" ? "block pt-4 pb-24" : "hidden"
           }`}
         >
           <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">
@@ -832,7 +829,7 @@ export default function App() {
         {/* Panel 2: Dynamic Form / Templates Selector */}
         <section
           className={`w-full lg:w-80 bg-gray-50 border-r border-gray-200 p-4 overflow-y-auto lg:block shrink-0 ${
-            mobileTab === "content" ? "block pt-12" : "hidden"
+            mobileTab === "content" ? "block pt-4 pb-24" : "hidden"
           }`}
         >
           {/* Templates Grid */}
@@ -1650,10 +1647,22 @@ export default function App() {
           )}
         </section>
 
+        {/* AI Copilot — mobile workspace */}
+        <section
+          className={`lg:hidden w-full bg-slate-50 overflow-hidden ${mobileTab === "ai" ? "block pb-20" : "hidden"}`}
+        >
+          <AiCopilot
+            resumeData={resumeData}
+            creationType={creationType}
+            lang={lang}
+            onApply={applyAiPatch}
+          />
+        </section>
+
         {/* Panel 3: Live Preview with Zoom */}
         <main
           className={`flex-1 bg-gray-200 flex flex-col overflow-hidden relative lg:flex ${
-            mobileTab === "preview" ? "flex pt-12" : "hidden"
+            mobileTab === "preview" ? "flex pb-20" : "hidden"
           }`}
         >
           {/* Zoom Controls */}
@@ -1745,6 +1754,18 @@ export default function App() {
           )}
         </main>
       </div>
+
+      {aiPanelOpen && (
+        <div className="hidden lg:block fixed inset-y-14 right-0 z-[70] w-[440px] max-w-[42vw] bg-white border-l border-slate-200 shadow-2xl">
+          <AiCopilot
+            resumeData={resumeData}
+            creationType={creationType}
+            lang={lang}
+            onApply={applyAiPatch}
+            onClose={() => setAiPanelOpen(false)}
+          />
+        </div>
+      )}
 
       <DownloadModal
         isOpen={isModalOpen}
