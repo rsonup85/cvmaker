@@ -2,17 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.biodatamaker.store/</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.biodatamaker.store/biodata-maker/</loc>
+    <loc>https://www.biodatamaker.store/?mode=job</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.biodatamaker.store/marriage-biodata-maker/</loc>
-  </url>
-  <url>
-    <loc>https://www.biodatamaker.store/resume-maker/</loc>
-  </url>
-  <url>
-    <loc>https://www.biodatamaker.store/cv-maker/</loc>
+    <loc>https://www.biodatamaker.store/?mode=marriage</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>

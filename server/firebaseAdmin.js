@@ -1,43 +1,82 @@
-import { cert, getApps, initializeApp } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+/**
+ * CVMaker AI - Server-side Firebase Admin Initialization
+ * 
+ * Supports:
+ * - FIREBASE_SERVICE_ACCOUNT_JSON (preferred)
+ * - Split: FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY
+ * - Safe newline normalization for private keys
+ * - Never logs private keys or secrets
+ */
 
-let app;
+import admin from 'firebase-admin';
 
-function cleanEnv(value) {
-  return String(value || '').trim().replace(/^\"|\"$/g, '');
-}
+let adminApp = null;
+let firestoreDb = null;
 
-function getAdminApp() {
-  if (getApps().length) return getApps()[0];
+export function initFirebaseAdmin() {
+  if (adminApp) return { adminApp, firestoreDb };
 
-  // Preferred on Vercel: one JSON secret. Keep the three-variable form for
-  // existing deployments as a fallback.
-  const rawJson = cleanEnv(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
-  if (rawJson) {
-    try {
-      const serviceAccount = JSON.parse(rawJson);
-      if (serviceAccount.private_key) {
-        serviceAccount.private_key = String(serviceAccount.private_key).replace(/\\n/g, '\n');
-      }
-      app = initializeApp({ credential: cert(serviceAccount) });
-      return app;
-    } catch (error) {
-      throw new Error(`Invalid FIREBASE_SERVICE_ACCOUNT_JSON: ${error.message}`);
+  try {
+    if (admin.apps.length > 0) {
+      adminApp = admin.apps[0];
+      firestoreDb = adminApp.firestore();
+      return { adminApp, firestoreDb };
     }
-  }
 
-  const projectId = cleanEnv(process.env.FIREBASE_PROJECT_ID);
-  const clientEmail = cleanEnv(process.env.FIREBASE_CLIENT_EMAIL);
-  const privateKey = cleanEnv(process.env.FIREBASE_PRIVATE_KEY).replace(/\\n/g, '\n');
-  if (!projectId || !clientEmail || !privateKey) {
-    throw new Error('Firebase server credentials missing. Configure FIREBASE_SERVICE_ACCOUNT_JSON or FIREBASE_PROJECT_ID + FIREBASE_CLIENT_EMAIL + FIREBASE_PRIVATE_KEY in Vercel.');
-  }
+    // Option A: Full JSON Service Account string
+    const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
+    if (serviceAccountJson) {
+      const credentials = typeof serviceAccountJson === 'string'
+        ? JSON.parse(serviceAccountJson)
+        : serviceAccountJson;
 
-  app = initializeApp({ credential: cert({ projectId, clientEmail, privateKey }) });
-  return app;
+      adminApp = admin.initializeApp({
+        credential: admin.credential.cert(credentials)
+      });
+      firestoreDb = adminApp.firestore();
+      return { adminApp, firestoreDb };
+    }
+
+    // Option B: Split Credentials
+    const projectId = process.env.FIREBASE_PROJECT_ID;
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+    let privateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+    if (projectId && clientEmail && privateKey) {
+      // Normalize escaped newlines
+      privateKey = privateKey.replace(/\\n/g, '\n');
+
+      adminApp = admin.initializeApp({
+        credential: admin.credential.cert({
+          projectId,
+          clientEmail,
+          privateKey
+        })
+      });
+      firestoreDb = adminApp.firestore();
+      return { adminApp, firestoreDb };
+    }
+
+    console.warn('Firebase Admin: No credentials provided in environment. Database features will operate in local fallback mode.');
+    return { adminApp: null, firestoreDb: null };
+  } catch (err) {
+    console.error('Firebase Admin initialization error:', err.message);
+    return { adminApp: null, firestoreDb: null };
+  }
 }
 
-export function db() { return getFirestore(getAdminApp()); }
-export function adminAuth() { return getAuth(getAdminApp()); }
-export { FieldValue };
+export function getFirestore() {
+  if (!firestoreDb) {
+    const res = initFirebaseAdmin();
+    return res.firestoreDb;
+  }
+  return firestoreDb;
+}
+
+export function getAuthAdmin() {
+  if (!adminApp) {
+    const res = initFirebaseAdmin();
+    return res.adminApp ? res.adminApp.auth() : null;
+  }
+  return adminApp.auth();
+}

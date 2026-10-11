@@ -1,0 +1,6 @@
+{
+  "name": "CVMaker AI — Premium Resume & Marriage Biodata Maker",
+  "description": "Professional Indian CV, Resume, Job Biodata, and Marriage Biodata maker with 400+ premium templates, AI Copilot, live A4 preview, and instant export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

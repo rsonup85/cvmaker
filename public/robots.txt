@@ -1,4 +1,8 @@
+# Robots.txt for Biodata Maker AI
+# Official Domain: https://www.biodatamaker.store
+
 User-agent: *
 Allow: /
 
-# Set VITE_SITE_URL to your production origin and generate sitemap.xml during build.
+# Sitemaps
+Sitemap: https://www.biodatamaker.store/sitemap.xml
