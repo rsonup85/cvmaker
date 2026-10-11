@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // All application data is accessed through the Vercel server using
+    // Firebase Admin SDK. The browser must never read or write these docs.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

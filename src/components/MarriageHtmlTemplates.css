@@ -1,0 +1,143 @@
+/* Standard A4 exact width/height container */
+        .marriage-html-root .a4-page {
+            width: 794px;
+            min-height: 1123px;
+            height: auto;
+            margin: 0 auto;
+            background: #ffffff;
+            color: #333333;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            position: relative;
+            box-sizing: border-box;
+            overflow: hidden;
+            page-break-after: always;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .marriage-html-root .a4-page {
+                box-shadow: none !important;
+                margin: 0 !important;
+                width: 100% !important;
+                page-break-after: always;
+            }
+            .marriage-html-root .a4-page:not(.active-print) {
+                display: none !important;
+            }
+        }
+
+        /* Decorative Borders & Styles per Template */
+
+        /* TEMPLATE 1: Floral Crimson Red Border */
+        .marriage-html-root .tpl-1-border {
+            border: 24px solid transparent;
+            border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill="none" stroke="%238b0000" stroke-width="3"/><path d="M 0,0 Q 25,10 0,50 Q 10,25 0,0" fill="%23b8860b"/><circle cx="5" cy="5" r="4" fill="%238b0000"/><circle cx="95" cy="5" r="4" fill="%238b0000"/><circle cx="5" cy="95" r="4" fill="%238b0000"/><circle cx="95" cy="95" r="4" fill="%238b0000"/></svg>') 30 stretch;
+            position: relative;
+        }
+        .marriage-html-root .tpl-1-header-bg {
+            background: linear-gradient(135deg, #a71d2a 0%, #d97706 100%);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 4px;
+            display: inline-block;
+            font-weight: 600;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* TEMPLATE 2: Minimal Light Cream Double Line Border */
+        .marriage-html-root .tpl-2-bg {
+            background-color: #faf6ee;
+            background-image: radial-gradient(#e5d9c5 0.75px, transparent 0.75px);
+            background-size: 16px 16px;
+        }
+        .marriage-html-root .tpl-2-border {
+            border: 2px solid #8c6d3f;
+            outline: 6px solid #8c6d3f;
+            outline-offset: -14px;
+        }
+
+        /* TEMPLATE 3: Corner Leaf Pattern Border */
+        .marriage-html-root .tpl-3-header-bg {
+            background: linear-gradient(90deg, #f97316 0%, #fef08a 50%, #f97316 100%);
+            color: #7c2d12;
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+        .marriage-html-root .tpl-3-border {
+            border: 3px double #d97706;
+            margin: 15px;
+            padding: 25px;
+        }
+
+        /* TEMPLATE 4: Traditional Red Maroon Ornamental Border */
+        .marriage-html-root .tpl-4-border {
+            border: 12px double #800000;
+            outline: 2px solid #d4af37;
+            outline-offset: -8px;
+        }
+
+        /* TEMPLATE 5: Deep Red Maroon Dark Background */
+        .marriage-html-root .tpl-5-bg {
+            background: linear-gradient(180deg, #4a0404 0%, #2b0202 100%);
+            color: #fef08a;
+        }
+        .marriage-html-root .tpl-5-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        /* TEMPLATE 6: Elegant Brown Ornate Border */
+        .marriage-html-root .tpl-6-border {
+            border: 4px double #5c3a21;
+            box-shadow: inset 0 0 0 10px #fdfbf7, inset 0 0 0 12px #5c3a21;
+        }
+
+        /* TEMPLATE 7: Cream Gold Pattern Lanterns */
+        .marriage-html-root .tpl-7-bg {
+            background-color: #fef3c7;
+            background-image: radial-gradient(#d97706 0.5px, #fef3c7 0.5px);
+            background-size: 20px 20px;
+        }
+
+        /* TEMPLATE 8: Marathi / Devnagari Watermark Style */
+        .marriage-html-root .tpl-8-watermark {
+            position: absolute;
+            bottom: 50px;
+            right: 20px;
+            opacity: 0.08;
+            width: 400px;
+            pointer-events: none;
+        }
+
+        /* Common table key-value styles */
+        .marriage-html-root .bio-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .marriage-html-root .bio-table td {
+            padding: 6px 4px;
+            vertical-align: top;
+            font-size: 14px;
+        }
+        .marriage-html-root .bio-table .label {
+            font-weight: 600;
+            width: 35%;
+        }
+        .marriage-html-root .bio-table .colon {
+            width: 4%;
+            text-align: center;
+        }
+        .marriage-html-root .bio-table .val {
+            width: 61%;
+        }
+.marriage-html-root{width:100%;height:100%;overflow:hidden;background:#fff;color:#333;}
+.marriage-html-root .a4-page{width:100%;min-height:100%;height:100%;margin:0;box-shadow:none;}
+.marriage-html-root .marriage-profile-image{object-fit:cover;}
+.marriage-html-root .marriage-profile-image-wrap{overflow:hidden;}
+.marriage-html-root .marriage-content-scale{transform-origin:top left;}
+
+.marriage-html-root .marriage-profile-image{transform:scale(calc(var(--marriage-photo-size) / 72px));transform-origin:center center;}

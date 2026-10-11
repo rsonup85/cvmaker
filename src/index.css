@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Force light theme — prevents mobile system dark mode from making UI pure black */
+html {
+  color-scheme: light only;
+  background-color: #f3f4f6;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  height: 100%;
+  background-color: #f3f4f6 !important;
+  color: #1f2937 !important;
+}
+
+body {
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Inputs stay readable in forced dark mode browsers */
+input,
+textarea,
+select,
+button {
+  color-scheme: light;
+}
+
+
+/* ============================================================
+   CV AUTO-FIT TYPOGRAPHY
+   --resume-font-scale grows when content is short so the A4 page fills.
+   ============================================================ */
+#resume-document {
+  user-select: none;
+  -webkit-user-select: none;
+  font-size: calc(10.5px * var(--resume-font-scale, 1));
+  line-height: 1.45;
+  box-sizing: border-box !important;
+}
+#resume-document [class*="text-[26px]"] {
+  font-size: calc(26px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document [class*="text-[22px]"] {
+  font-size: calc(22px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document [class*="text-[18px]"] {
+  font-size: calc(18px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document [class*="text-[16px]"] {
+  font-size: calc(16px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document [class*="text-[14px]"] {
+  font-size: calc(14px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document [class*="text-[12px]"] {
+  font-size: calc(12px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document [class*="text-[11px]"] {
+  font-size: calc(11px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document [class*="text-[10.5px]"] {
+  font-size: calc(10.5px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document [class*="text-[10px]"] {
+  font-size: calc(10px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document [class*="text-[9.5px]"] {
+  font-size: calc(9.5px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document [class*="text-[9px]"] {
+  font-size: calc(9px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document [class*="text-[8.5px]"] {
+  font-size: calc(8.5px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document .text-lg {
+  font-size: calc(18px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document .text-base {
+  font-size: calc(16px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document .text-sm {
+  font-size: calc(14px * var(--resume-font-scale, 1)) !important;
+}
+#resume-document .text-xs {
+  font-size: calc(12px * var(--resume-font-scale, 1)) !important;
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #000000 !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  #resume-document {
+  user-select: none;
+  -webkit-user-select: none;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    max-height: 297mm !important;
+    overflow: hidden !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* Rich text editor */
+.rich-editor { width: 100%; }
+.rich-editor-toolbar { display:flex; align-items:center; gap:4px; padding:7px; border:1px solid #dbe2ea; border-top:0; border-radius:0 0 12px 12px; background:#f8fafc; position:static; z-index:auto; flex-wrap:wrap; }
+.rich-editor-toolbar button { width:42px; height:38px; display:flex; align-items:center; justify-content:center; border:0; border-radius:8px; background:#fff; color:#111827; cursor:pointer; transition:background .15s, transform .1s; box-shadow:0 1px 2px rgba(15,23,42,.05); }
+.rich-editor-toolbar button:hover:not(:disabled) { background:#eef2ff; }
+.rich-editor-toolbar button:active:not(:disabled) { transform:scale(.96); }
+.rich-editor-toolbar button:disabled { opacity:.35; cursor:not-allowed; }
+.rich-editor-divider { width:1px; height:26px; background:#dbe2ea; margin:0 4px; }
+.rich-editor-input { border:1px solid #dbe2ea; border-radius:12px 12px 0 0; background:#fff; padding:12px 13px; outline:none; font-size:14px; line-height:1.55; color:#0f172a; overflow:auto; white-space:pre-wrap; word-break:break-word; user-select:text; -webkit-user-select:text; caret-color:#0f172a; }
+.rich-editor-input:focus { border-color:#60a5fa; box-shadow:0 0 0 3px rgba(59,130,246,.10); }
+.rich-editor-input:empty:before { content:attr(data-placeholder); color:#94a3b8; pointer-events:none; }
+.rich-editor-input p { margin:0 0 .45em; }
+.rich-editor-input ul, .rich-editor-input ol { padding-left:1.5rem; margin:.25em 0 .55em; }
+.rich-editor-input li { margin:.15em 0; }
+.rich-text-content p { margin:0 0 .45em; }
+.rich-text-content p:last-child { margin-bottom:0; }
+.rich-text-content ul, .rich-text-content ol { margin:.25em 0 .55em; padding-left:1.35em; }
+.rich-text-content li { margin:.12em 0; }
+.rich-text-content br { line-height:inherit; }
+@media (max-width: 640px) {
+  .rich-editor-toolbar { gap:3px; padding:6px; }
+  .rich-editor-toolbar button { width:40px; height:38px; }
+  .rich-editor-input { font-size:15px; }
+}
+
+/* Mobile-friendly biodata maker */
+@media (max-width: 1023px) {
+  /* Larger touch targets on form controls */
+  input, textarea, select, button {
+    min-height: 40px;
+  }
+  /* Comfortable form panel padding on small screens */
+  .mobile-form-comfortable {
+    padding-bottom: 5rem;
+  }
+}
+
+/* Sticky mobile bottom hint bar space */
+@supports (padding: max(0px)) {
+  .safe-area-top {
+    padding-top: max(0.5rem, env(safe-area-inset-top));
+  }
+}
+
+/* ============================================================
+   UNIVERSAL AUTOFIT FILL
+   Used by the master-style binary-search engine. Existing templates
+   can opt into spacing with --resume-fit-space without knowing the
+   specific template family. Common Tailwind sizes are also linked to
+   --resume-font-scale so newly added templates get the same behavior.
+   ============================================================ */
+#resume-document {
+  --resume-fit-space: 1;
+  --resume-auto-top-pad: 0px;
+  line-height: calc(1.45 * var(--resume-fit-space, 1));
+}
+#resume-document .space-y-1 > :not([hidden]) ~ :not([hidden]) { margin-top: calc(0.25rem * var(--resume-fit-space, 1)) !important; }
+#resume-document .space-y-1\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: calc(0.375rem * var(--resume-fit-space, 1)) !important; }
+#resume-document .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: calc(0.5rem * var(--resume-fit-space, 1)) !important; }
+#resume-document .space-y-2\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: calc(0.625rem * var(--resume-fit-space, 1)) !important; }
+#resume-document .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: calc(0.75rem * var(--resume-fit-space, 1)) !important; }
+#resume-document .space-y-3\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: calc(0.875rem * var(--resume-fit-space, 1)) !important; }
+#resume-document .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: calc(1rem * var(--resume-fit-space, 1)) !important; }
+#resume-document .space-y-5 > :not([hidden]) ~ :not([hidden]) { margin-top: calc(1.25rem * var(--resume-fit-space, 1)) !important; }
+#resume-document .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: calc(1.5rem * var(--resume-fit-space, 1)) !important; }
+#resume-document .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: calc(2rem * var(--resume-fit-space, 1)) !important; }
+#resume-document .space-y-10 > :not([hidden]) ~ :not([hidden]) { margin-top: calc(2.5rem * var(--resume-fit-space, 1)) !important; }
+
+/* Common Tailwind text sizes for future templates. */
+#resume-document .text-xl { font-size: calc(20px * var(--resume-font-scale, 1)) !important; }
+#resume-document .text-2xl { font-size: calc(24px * var(--resume-font-scale, 1)) !important; }
+#resume-document .text-3xl { font-size: calc(30px * var(--resume-font-scale, 1)) !important; }
+#resume-document .text-4xl { font-size: calc(36px * var(--resume-font-scale, 1)) !important; }

@@ -1,0 +1,198 @@
+/* ============================================================
+   Simple White Job Resume — A4, clean, auto-fit aware
+   ============================================================ */
+
+.job-simple-page {
+  width: 210mm;
+  height: 297mm;
+  min-width: 210mm;
+  min-height: 297mm;
+  max-width: 210mm;
+  max-height: 297mm;
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #111111;
+  /* Padding scales with content — small content = more margin, big content = less */
+  padding: calc(16mm / var(--resume-font-scale, 1))
+           calc(15mm / var(--resume-font-scale, 1))
+           calc(14mm / var(--resume-font-scale, 1))
+           calc(15mm / var(--resume-font-scale, 1));
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-size: calc(10.5px * var(--resume-font-scale, 1));
+  line-height: 1.45;
+  display: flex;
+  flex-direction: column;
+  transform-origin: top center;
+}
+
+/* ---------- Header ---------- */
+.job-simple-header {
+  text-align: center;
+  margin-bottom: calc(6mm * var(--resume-font-scale, 1));
+}
+
+.job-simple-title {
+  font-size: calc(22px * var(--resume-font-scale, 1));
+  font-weight: 800;
+  letter-spacing: calc(6px * var(--resume-font-scale, 1));
+  text-transform: uppercase;
+  color: #111111;
+  margin: 0 0 calc(3mm * var(--resume-font-scale, 1)) 0;
+  padding-bottom: calc(2mm * var(--resume-font-scale, 1));
+  border-bottom: calc(2px * var(--resume-font-scale, 1)) solid #111111;
+  display: inline-block;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.job-simple-name-row {
+  margin-top: calc(3mm * var(--resume-font-scale, 1));
+}
+
+.job-simple-name {
+  font-size: calc(16px * var(--resume-font-scale, 1));
+  font-weight: 700;
+  color: #111111;
+  letter-spacing: 0.5px;
+}
+
+.job-simple-role {
+  font-size: calc(11px * var(--resume-font-scale, 1));
+  color: #555555;
+  margin-top: 1mm;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.job-simple-contact {
+  margin-top: calc(2.5mm * var(--resume-font-scale, 1));
+  font-size: calc(10.5px * var(--resume-font-scale, 1));
+  color: #333333;
+  word-break: break-word;
+}
+
+.job-simple-divider {
+  height: calc(1px * var(--resume-font-scale, 1));
+  background: #111111;
+  margin: 0 0 calc(5mm * var(--resume-font-scale, 1)) 0;
+}
+
+/* ---------- Sections ---------- */
+.job-simple-section {
+  margin-bottom: calc(5mm * var(--resume-font-scale, 1));
+}
+
+.job-simple-section-title {
+  font-size: calc(12.5px * var(--resume-font-scale, 1));
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: calc(1.5px * var(--resume-font-scale, 1));
+  color: #111111;
+  margin: 0 0 calc(2.5mm * var(--resume-font-scale, 1)) 0;
+  padding-bottom: calc(1.5mm * var(--resume-font-scale, 1));
+  border-bottom: calc(1.5px * var(--resume-font-scale, 1)) solid #111111;
+}
+
+.job-simple-text {
+  font-size: calc(10.5px * var(--resume-font-scale, 1));
+  color: #222222;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.job-simple-rich {
+  font-size: calc(10.5px * var(--resume-font-scale, 1));
+  color: #222222;
+  line-height: 1.5;
+}
+.job-simple-rich p { margin: 0 0 0.4em; }
+.job-simple-rich p:last-child { margin-bottom: 0; }
+.job-simple-rich ul,
+.job-simple-rich ol { margin: 0.2em 0 0.5em; padding-left: 1.4em; }
+.job-simple-rich li { margin: 0.1em 0; }
+.job-simple-rich strong { font-weight: 700; }
+.job-simple-rich em { font-style: italic; }
+.job-simple-rich u { text-decoration: underline; }
+
+/* ---------- Table (Title : Value) ---------- */
+.job-simple-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  display: table;
+}
+
+.job-simple-table tbody {
+  display: table-row-group;
+}
+
+.job-simple-table tr {
+  display: grid;
+  grid-template-columns: minmax(120px, max-content) 14px 1fr;
+  column-gap: 6px;
+  align-items: start;
+  padding: calc(1.5mm * var(--resume-font-scale, 1)) 0;
+  border-bottom: 1px dotted #cccccc;
+}
+.job-simple-table tr:last-child {
+  border-bottom: none;
+}
+
+.job-simple-label {
+  font-weight: 700;
+  color: #111111;
+  font-size: calc(10.5px * var(--resume-font-scale, 1));
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.35;
+}
+
+.job-simple-colon {
+  color: #111111;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.35;
+  font-size: calc(10.5px * var(--resume-font-scale, 1));
+}
+
+.job-simple-value {
+  color: #222222;
+  font-size: calc(10.5px * var(--resume-font-scale, 1));
+  line-height: 1.4;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Footer / signature ---------- */
+.job-simple-footer {
+  margin-top: auto;
+  padding-top: calc(8mm * var(--resume-font-scale, 1));
+  text-align: right;
+}
+
+.job-simple-sign-line {
+  display: inline-block;
+  border-top: 1px solid #333333;
+  padding-top: 1mm;
+  min-width: 55mm;
+  text-align: center;
+  font-size: calc(10px * var(--resume-font-scale, 1));
+  color: #333333;
+}
+
+/* ---------- Preview watermark ---------- */
+.job-simple-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-32deg);
+  font-size: calc(40px * var(--resume-font-scale, 1));
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: rgba(17, 17, 17, 0.05);
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
+}

@@ -1,0 +1,745 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600&family=Rozha+One&family=Yatra+One&display=swap');
+
+.hm-exact-wrap { width: 100%; height: 100%; display: block; padding: 0; background: transparent; }
+.hm-card { width: 100%; height: 100%; min-height: 100%; position: relative; box-sizing: border-box; overflow: hidden; }
+.hm-card img { max-width: 100%; }
+.hm-section { margin-bottom: 18px; }
+.hm-section-title { margin-top: 18px; margin-bottom: 10px; font-weight: 700; }
+
+/* ============================================================
+   BIO TABLE — Grid rows: [label] [colon] [value]
+   ============================================================ */
+.bio-table { width: 100%; display: block; }
+.bio-table tbody,
+.bio-table tr,
+.bio-table td { display: block; }
+
+.bio-table tr {
+  display: grid;
+  grid-template-columns: 145px 14px 1fr;
+  align-items: start;
+  column-gap: 6px;
+  padding: 3px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.bio-table td.label {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 4px;
+  min-width: 0;
+}
+.bio-table td.colon { text-align: center; font-weight: 700; padding: 0; }
+.bio-table td.val {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.bio-table td.label.wrap { white-space: normal; }
+
+/* ============================================================
+   All template main-rows use CSS Grid so photo height
+   does NOT push text down. Photo top-aligned with first section.
+   ============================================================ */
+.tpl1-main-row,
+.tpl2-main-row,
+.tpl3-main-row,
+.tpl5-main-row,
+.tpl6-main-row,
+.tpl7-main-row,
+.tpl8-main-row,
+.tpl9-main,
+.tpl10-main,
+.tpl11-main,
+.tpl12-profile,
+.tpl13-main,
+.tpl14-header,
+.tpl15-main,
+.tpl16-main,
+.tpl17-top,
+.tpl18-main,
+.tpl19-main,
+.tpl20-main,
+.tpl21-main,
+.tpl22-main,
+.tpl23-main,
+.tpl24-top,
+.tpl25-main,
+.tpl26-main,
+.tpl27-main,
+.tpl29-header,
+.tpl30-top {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  column-gap: 16px !important;
+  align-items: start !important;
+  position: relative !important;
+}
+
+.tpl1-details,
+.tpl2-details,
+.tpl3-details,
+.tpl5-details,
+.tpl6-details,
+.tpl7-details,
+.tpl8-details,
+.tpl9-details,
+.tpl10-details,
+.tpl11-details,
+.tpl12-name-box,
+.tpl13-left,
+.tpl15-left,
+.tpl16-left,
+.tpl17-title,
+.tpl18-left,
+.tpl19-left,
+.tpl20-left,
+.tpl21-left,
+.tpl22-left,
+.tpl23-left,
+.tpl24-head,
+.tpl25-left,
+.tpl26-left,
+.tpl27-left,
+.tpl29-title,
+.tpl30-top > div:first-child {
+  grid-column: 1 !important;
+  min-width: 0 !important;
+}
+
+.tpl1-photo-wrap,
+.tpl2-photo-wrap,
+.tpl3-photo-wrap,
+.tpl5-photo-wrap,
+.tpl6-photo-wrap,
+.tpl7-photo-wrap,
+.tpl8-photo-wrap,
+.tpl9-photo-wrap,
+.tpl10-photo-wrap,
+.tpl11-photo-wrap,
+.tpl12-photo-frame,
+.tpl13-photo-wrap,
+.tpl14-circle,
+.tpl15-photo,
+.tpl16-photo,
+.tpl17-circle,
+.tpl18-photo,
+.tpl19-photo,
+.tpl20-photo,
+.tpl21-photo,
+.tpl22-photo,
+.tpl23-photo,
+.tpl24-photo,
+.tpl25-photo,
+.tpl26-photo,
+.tpl27-photo,
+.tpl29-circle,
+.tpl30-photo {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  align-self: start !important;
+  width: var(--hm-photo-size) !important;
+  float: none !important;
+  margin: 0 !important;
+}
+
+/* Photo inner frames — height tied to width so text doesn't shift */
+.tpl1-photo-frame,
+.tpl2-photo-box,
+.tpl3-photo-box,
+.tpl5-photo-box,
+.tpl6-photo-box,
+.tpl7-photo-box,
+.tpl8-photo-box,
+.tpl9-photo-frame,
+.tpl10-photo-frame,
+.tpl11-circle,
+.tpl12-photo-frame,
+.tpl13-photo-frame,
+.tpl14-circle,
+.tpl15-frame,
+.tpl16-frame,
+.tpl17-circle,
+.tpl18-frame,
+.tpl19-frame,
+.tpl20-frame,
+.tpl21-frame,
+.tpl22-frame,
+.tpl23-frame,
+.tpl24-photo,
+.tpl25-circle,
+.tpl26-frame,
+.tpl27-frame,
+.tpl29-circle,
+.tpl30-frame {
+  width: var(--hm-photo-size) !important;
+  max-width: var(--hm-photo-size) !important;
+  aspect-ratio: 1 / 1.22 !important;
+  height: auto !important;
+}
+
+/* ============================================================
+   Section title tight to top — no gap after main title
+   ============================================================ */
+.hm-section:first-child .hm-section-title,
+.hm-section-title:first-child {
+  margin-top: 0 !important;
+}
+.hm-section-title + .bio-table tr:first-child td {
+  padding-top: 0 !important;
+}
+.bio-table tr {
+  padding: 2px 0 !important;
+}
+
+/* ============================================================
+   TEMPLATE 1 — Floral Crimson Red Border
+   ============================================================ */
+.tpl-1-border { border: 10px solid #8b0000; box-shadow: inset 0 0 0 4px #b8860b, inset 0 0 0 8px #8b0000; }
+.marriage-card-1 { background:#fff; color:#333; padding:40px 50px; font-family:'Poppins',sans-serif; box-shadow:0 10px 25px rgba(0,0,0,.15); }
+.tpl1-corner { position:absolute; width:70px; height:70px; border:2px solid #8b0000; pointer-events:none; }
+.tpl1-corner.tl{top:15px;left:15px;border-right:0;border-bottom:0}
+.tpl1-corner.tr{top:15px;right:15px;border-left:0;border-bottom:0}
+.tpl1-corner.bl{bottom:15px;left:15px;border-right:0;border-top:0}
+.tpl1-corner.br{bottom:15px;right:15px;border-left:0;border-top:0}
+.tpl1-header{text-align:center;margin-bottom:25px}
+.tpl1-mantra{font-family:serif;font-size:18px;font-weight:700;color:#8b0000}
+.tpl1-photo-frame{border:3px solid #8b0000;border-radius:4px;overflow:hidden;box-shadow:0 4px 8px rgba(0,0,0,.1)}
+.tpl1-photo-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-1 .hm-section-title{font-family:'Cinzel',serif;font-size:16px;color:#8b0000;border-bottom:2px solid #8b0000;padding-bottom:4px;letter-spacing:.5px}
+.marriage-card-1 .bio-table td{font-size:14px;color:#333}
+.marriage-card-1 .bio-table td.colon{color:#8b0000}
+
+/* ============================================================
+   TEMPLATE 2 — Minimal Light Cream Double Line
+   ============================================================ */
+.tpl-2-bg{background:#faf6ee;background-image:radial-gradient(#e5d9c5 .75px,transparent .75px);background-size:16px 16px}
+.tpl-2-border{border:2px solid #8c6d3f;box-shadow:inset 0 0 0 8px #faf6ee, inset 0 0 0 10px #8c6d3f}
+.marriage-card-2{padding:48px 50px;color:#5b3b1d;font-family:'Lora',serif}
+.tpl2-title{text-align:center;font-family:'Cinzel',serif;color:#5b3415;font-size:30px;font-weight:700;letter-spacing:3px;border-bottom:2px solid #8c6d3f;display:table;margin:0 auto 30px;padding-bottom:6px}
+.tpl2-photo-box{border:2px solid #8c6d3f;padding:3px;background:#fff}
+.tpl2-photo-box img{width:100%;height:100%;object-fit:cover}
+.marriage-card-2 .hm-section-title{font-family:'Cinzel',serif;font-size:18px;color:#8b4513;font-weight:700;text-align:center;letter-spacing:1px}
+.marriage-card-2 .bio-table td{font-size:15px;color:#4a3523}
+
+/* ============================================================
+   TEMPLATE 3 — Corner Leaf Gold Pattern
+   ============================================================ */
+.tpl-3-bg{background:#fffaf0}
+.tpl-3-border{border:3px double #d97706;padding:25px;margin:0;min-height:100%;width:100%;height:100%;box-sizing:border-box}
+.marriage-card-3{font-family:'Poppins',sans-serif;color:#3f2a16}
+.tpl3-title{text-align:center;font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:#7c2d12;letter-spacing:4px;margin:5px 0 24px}
+.tpl3-photo-box{border:2px solid #f97316;border-radius:12px;padding:4px;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.12)}
+.tpl3-photo-box img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.marriage-card-3 .hm-section-title{background:linear-gradient(90deg,#f97316 0%,#fef08a 50%,#f97316 100%);color:#7c2d12;padding:6px 16px;border-radius:4px;font-size:14px;display:inline-block}
+.marriage-card-3 .bio-table td{font-size:13px}
+
+/* ============================================================
+   TEMPLATE 4 — Traditional Red Maroon Banner / Center Photo
+   ============================================================ */
+.tpl-4-border{border:12px double #800000;box-shadow:inset 0 0 0 3px #fffdf8, inset 0 0 0 5px #d4af37}
+.marriage-card-4{padding:42px 60px;background:#fffdf8;color:#4a1b1b;font-family:'Poppins',sans-serif}
+.tpl4-photo-wrap{float:right;width:var(--hm-photo-size);margin:0 0 10px 16px}
+.tpl4-photo-circle{width:var(--hm-photo-size);height:var(--hm-photo-size);border-radius:50%;border:4px solid #800000;padding:4px;overflow:hidden;background:#fff}
+.tpl4-photo-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.marriage-card-4 .hm-section-title{font-family:'Cinzel',serif;color:#800000;font-size:20px;letter-spacing:1px;text-transform:uppercase}
+.marriage-card-4 .bio-table td{font-size:14px}
+
+/* ============================================================
+   TEMPLATE 5 — Deep Red Maroon Dark
+   ============================================================ */
+.tpl-5-bg{background:linear-gradient(180deg,#4a0404 0%,#2b0202 100%);color:#fef08a}
+.marriage-card-5{padding:46px 50px;font-family:'Poppins',sans-serif}
+.tpl5-title{text-align:center;color:#fcd34d;font-family:'Rozha One',serif;font-size:30px;margin-bottom:28px}
+.tpl5-photo-box{border:2px solid #fbbf24;border-radius:8px;padding:4px;background:rgba(255,255,255,.08)}
+.tpl5-photo-box img{width:100%;height:100%;object-fit:cover;border-radius:4px}
+.marriage-card-5 .hm-section-title{color:#fbbf24;border-bottom:1px solid rgba(245,158,11,.5);padding-bottom:5px;font-size:18px}
+.marriage-card-5 .bio-table td{color:#fef3c7;font-size:14px}
+.marriage-card-5 .bio-table td.label{color:#fcd34d}
+
+/* ============================================================
+   TEMPLATE 6 — Elegant Brown Ornate
+   ============================================================ */
+.tpl-6-border{border:4px double #5c3a21;box-shadow:inset 0 0 0 10px #fdfbf7,inset 0 0 0 12px #5c3a21}
+.marriage-card-6{padding:48px 55px;background:#fffdf8;color:#4b3621;font-family:'Lora',serif}
+.tpl6-title{text-align:center;font-family:'Cinzel',serif;color:#5c3a21;font-size:25px;font-weight:700;letter-spacing:2px;border-bottom:2px solid #5c3a21;padding-bottom:5px;margin-bottom:22px}
+.tpl6-photo-box{border:2px solid #5c3a21;border-radius:12px;padding:4px;background:#fff}
+.tpl6-photo-box img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.marriage-card-6 .hm-section-title{font-family:'Cinzel',serif;font-size:18px;color:#5c3a21;border-bottom:1px solid #8c6d3f;padding-bottom:5px}
+.marriage-card-6 .bio-table td{font-size:14px;color:#4b3621}
+
+/* ============================================================
+   TEMPLATE 7 — Cream Gold Pattern
+   ============================================================ */
+.tpl-7-bg{background:#fef3c7;background-image:radial-gradient(#d97706 .5px,#fef3c7 .5px);background-size:20px 20px}
+.marriage-card-7{padding:46px 50px;color:#5b3b0a;font-family:'Poppins',sans-serif}
+.tpl7-title{text-align:center;font-family:'Cinzel',serif;font-size:24px;font-weight:700;color:#92400e;margin-bottom:25px}
+.tpl7-photo-box{border:2px solid #92400e;border-radius:5px;padding:4px;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.18)}
+.tpl7-photo-box img{width:100%;height:100%;object-fit:cover;border-radius:3px}
+.marriage-card-7 .hm-section-title{background:#92400e;color:#fff;font-weight:700;font-size:14px;padding:5px 14px;border-radius:4px;display:inline-block}
+.marriage-card-7 .bio-table td{font-size:14px;color:#5b3b0a}
+
+/* ============================================================
+   TEMPLATE 8 — Devanagari / Marathi Style
+   ============================================================ */
+.tpl-8-border{border:4px solid rgba(146,64,14,.35);background:#fffdf7}
+.marriage-card-8{padding:46px 50px;font-family:'Poppins',sans-serif;color:#4a341e}
+.tpl8-title{text-align:center;font-family:'Yatra One',serif;color:#92400e;font-size:30px;margin-bottom:28px}
+.tpl8-photo-box{border:2px solid #92400e;padding:4px;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.tpl8-photo-box img{width:100%;height:100%;object-fit:cover}
+.marriage-card-8 .hm-section-title{font-family:'Yatra One',serif;font-size:20px;color:#92400e;border-bottom:2px solid rgba(146,64,14,.5);padding-bottom:4px}
+.marriage-card-8 .bio-table td{font-size:14px;color:#4a341e}
+
+/* ============================================================
+   Design Settings integration
+   ============================================================ */
+.hm-design-page{
+  --hm-scale:1;
+  --hm-font-factor:1;
+  --hm-line-spacing:1.15;
+  --hm-column-width:34%;
+  --hm-photo-size:72px;
+  --hm-offset-y:0mm;
+  --hm-section-gap:1;
+  flex:0 0 auto;
+  background:#ffffff;
+  overflow:hidden !important;
+  position:relative;
+}
+.hm-design-content{ position:absolute; inset:0; overflow:hidden; }
+.hm-design-content > .hm-exact-wrap{
+  position:absolute; inset:0; width:100%; height:100%;
+  overflow:hidden; box-sizing:border-box; will-change:transform;
+}
+.hm-design-content .hm-card,
+.hm-design-content .a4-marriage-template{
+  position:absolute !important;
+  top:0 !important; left:0 !important;
+  width:100% !important; height:100% !important;
+  min-height:100% !important; max-height:100% !important;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+  margin:0 !important;
+  line-height:var(--hm-line-spacing);
+  font-size:calc(1em * var(--hm-font-factor));
+  box-shadow:none;
+}
+.hm-design-content .hm-section{
+  margin-bottom: calc(18px * var(--hm-font-factor, 1) * var(--hm-section-gap, 1));
+}
+.hm-design-content .hm-section-title{
+  margin-top: calc(18px * var(--hm-font-factor, 1) * var(--hm-section-gap, 1));
+  margin-bottom: calc(10px * var(--hm-font-factor, 1) * var(--hm-section-gap, 1));
+  line-height: 1.25;
+  display: block;
+}
+.hm-design-content .bio-table tr{
+  grid-template-columns: 145px 14px 1fr;
+}
+.hm-design-content .bio-table td{
+  padding: calc(2px * var(--hm-font-factor, 1)) 0;
+  line-height: var(--hm-line-spacing);
+}
+.hm-design-content .bio-table td.label{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 4px;
+  min-width: 0;
+}
+.hm-design-content .bio-table td.label.wrap{ white-space: normal; }
+.hm-design-content .bio-table td.colon{ text-align: center; padding: 0; }
+
+/* Photo float fallback — remove float since grid handles it */
+.hm-design-content .tpl1-photo-wrap,
+.hm-design-content .tpl2-photo-wrap,
+.hm-design-content .tpl3-photo-wrap,
+.hm-design-content .tpl5-photo-wrap,
+.hm-design-content .tpl6-photo-wrap,
+.hm-design-content .tpl7-photo-wrap,
+.hm-design-content .tpl8-photo-wrap{
+  float: none !important;
+  margin: 0 !important;
+}
+.hm-design-content .tpl4-photo-circle{
+  width:var(--hm-photo-size); height:var(--hm-photo-size);
+  float:right; margin:0 0 10px 16px;
+}
+
+/* Photo size enforcement */
+.hm-design-content .tpl1-photo-frame,
+.hm-design-content .tpl2-photo-box,
+.hm-design-content .tpl3-photo-box,
+.hm-design-content .tpl5-photo-box,
+.hm-design-content .tpl6-photo-box,
+.hm-design-content .tpl7-photo-box,
+.hm-design-content .tpl8-photo-box{
+  width:var(--hm-photo-size) !important;
+}
+.hm-design-content .tpl1-photo-frame{height:calc(var(--hm-photo-size)*1.22)}
+.hm-design-content .tpl2-photo-box{height:calc(var(--hm-photo-size)*1.22)}
+.hm-design-content .tpl3-photo-box{height:calc(var(--hm-photo-size)*1.33)}
+.hm-design-content .tpl5-photo-box{height:calc(var(--hm-photo-size)*1.27)}
+.hm-design-content .tpl6-photo-box,
+.hm-design-content .tpl7-photo-box,
+.hm-design-content .tpl8-photo-box{height:calc(var(--hm-photo-size)*1.30)}
+.hm-design-content .tpl4-photo-circle{width:var(--hm-photo-size);height:var(--hm-photo-size)}
+
+/* Font scaling per template */
+.hm-design-content .marriage-card-1 .hm-section-title{font-size:calc(16px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-1 .bio-table td{font-size:calc(14px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-2 .tpl2-title{font-size:calc(30px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-2 .hm-section-title{font-size:calc(18px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-2 .bio-table td{font-size:calc(15px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-3 .tpl3-title{font-size:calc(26px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-3 .bio-table td{font-size:calc(13px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-4 .hm-section-title{font-size:calc(20px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-4 .bio-table td{font-size:calc(14px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-5 .tpl5-title{font-size:calc(30px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-5 .hm-section-title{font-size:calc(18px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-5 .bio-table td{font-size:calc(14px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-6 .tpl6-title{font-size:calc(25px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-6 .hm-section-title{font-size:calc(18px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-6 .bio-table td{font-size:calc(14px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-7 .tpl7-title{font-size:calc(24px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-7 .hm-section-title{font-size:calc(14px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-7 .bio-table td{font-size:calc(14px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-8 .tpl8-title{font-size:calc(30px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-8 .hm-section-title{font-size:calc(20px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-8 .bio-table td{font-size:calc(14px * var(--hm-font-factor))}
+
+.tpl1-details,.tpl2-details,.tpl3-details,.tpl5-details,.tpl6-details,.tpl7-details,.tpl8-details{width:auto}
+@media(max-width:850px){.hm-exact-wrap{overflow:visible}}
+
+/* ============================================================
+   TEMPLATES 9–14
+   ============================================================ */
+.marriage-card-9{background:#fbf4e2;color:#5d3a1a;font-family:'Playfair Display',Georgia,serif;padding:12px}
+.tpl9-outer{border:3px solid #8b5a2b;padding:8px;position:relative;height:100%;box-sizing:border-box}
+.tpl9-inner{border:1.5px solid #a67c52;padding:28px 32px;position:relative;min-height:100%;box-sizing:border-box;background:radial-gradient(circle,#fffef7 0%,#f7eccf 100%)}
+.tpl9-corner{position:absolute;width:56px;height:56px;border:2px solid #8b5a2b;pointer-events:none}
+.tpl9-corner.tl{top:4px;left:4px;border-right:0;border-bottom:0}
+.tpl9-corner.tr{top:4px;right:4px;border-left:0;border-bottom:0}
+.tpl9-corner.bl{bottom:4px;left:4px;border-right:0;border-top:0}
+.tpl9-corner.br{bottom:4px;right:4px;border-left:0;border-top:0}
+.tpl9-header{text-align:center;margin-bottom:18px}
+.tpl9-om{font-size:28px;color:#8b5a2b;line-height:1}
+.tpl9-mantra{font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:#6e441f;margin-top:4px}
+.tpl9-title{font-family:'Cinzel Decorative','Cinzel',serif;font-size:26px;font-weight:700;color:#5d3a1a;letter-spacing:2px;margin-top:8px}
+.tpl9-photo-frame{border:1px solid #7a4f22;padding:4px;background:#fff;box-shadow:2px 4px 10px rgba(0,0,0,.12);overflow:hidden}
+.tpl9-photo-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-9 .hm-section-title{font-family:'Cinzel',serif;font-size:calc(16px * var(--hm-font-factor));color:#5d3a1a;text-align:left;margin:14px 0 8px}
+.marriage-card-9 .bio-table td{font-size:calc(13px * var(--hm-font-factor));color:#4a2e16}
+
+.marriage-card-10{background:#fff9ee;color:#1b2a4a;font-family:'Poppins',sans-serif;padding:40px 36px;position:relative;overflow:hidden}
+.tpl10-floral{position:absolute;width:120px;height:120px;pointer-events:none;opacity:.55;background:radial-gradient(circle at 30% 30%,#f87171 0%,transparent 55%),radial-gradient(circle at 70% 40%,#fca5a5 0%,transparent 50%);border-radius:40% 60% 50% 50%}
+.tpl10-floral.tl{top:-20px;left:-20px}
+.tpl10-floral.tr{top:-20px;right:-20px;transform:scaleX(-1)}
+.tpl10-floral.bl{bottom:-20px;left:-20px;transform:scaleY(-1)}
+.tpl10-floral.br{bottom:-20px;right:-20px;transform:scale(-1)}
+.tpl10-content{position:relative;z-index:2}
+.tpl10-header{text-align:center;margin-bottom:22px}
+.tpl10-om{font-size:32px;color:#1b2a4a;font-weight:700;line-height:1}
+.tpl10-title{font-size:20px;font-weight:700;letter-spacing:4px;color:#1b2a4a;text-transform:uppercase;margin-top:4px}
+.tpl10-line{width:50px;height:2.5px;background:#3b4d71;margin:8px auto 0;border-radius:2px}
+.tpl10-photo-frame{border:2px solid #1b2a4a;overflow:hidden;background:#fff}
+.tpl10-photo-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-10 .hm-section-title{font-size:calc(15px * var(--hm-font-factor));font-weight:700;color:#1b2a4a;border-bottom:3px solid #3b4d71;display:inline-block;padding-bottom:3px;margin:12px 0 8px}
+.marriage-card-10 .bio-table td{font-size:calc(13px * var(--hm-font-factor));color:#111827}
+.marriage-card-10 .bio-table td.label{color:#3d4a66;font-weight:500}
+
+.marriage-card-11{background:#fffcf7;color:#333;font-family:'Poppins',sans-serif;padding:36px 40px;border:12px solid #fdf5ea;box-shadow:inset 0 0 0 1px #d4af37}
+.tpl11-header{text-align:center;margin-bottom:16px}
+.tpl11-om{font-size:26px;color:#996515}
+.tpl11-title{font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:#8b5a2b;margin-top:4px}
+.tpl11-sec{color:#996515;font-size:calc(14px * var(--hm-font-factor));font-weight:700;margin:14px 0 8px}
+.tpl11-circle{border-radius:50%;border:3px solid #d4af37;overflow:hidden;background:#fff}
+.tpl11-circle img{width:100%;height:100%;object-fit:cover}
+.marriage-card-11 .bio-table td{font-size:calc(13px * var(--hm-font-factor))}
+
+.marriage-card-12{background:#fdf6df;color:#333;font-family:'Montserrat',sans-serif;padding:18px}
+.tpl12-border{border:2px solid #b8860b;padding:24px 28px;position:relative;min-height:100%;box-sizing:border-box;box-shadow:0 0 0 6px #fdf6df, 0 0 0 7px #c9a050}
+.tpl12-corner{position:absolute;width:36px;height:36px;background:#8b0000;clip-path:polygon(0 0,100% 0,0 100%)}
+.tpl12-corner.tl{top:-1px;left:-1px}
+.tpl12-corner.tr{top:-1px;right:-1px;transform:scaleX(-1)}
+.tpl12-corner.bl{bottom:-1px;left:-1px;transform:scaleY(-1)}
+.tpl12-corner.br{bottom:-1px;right:-1px;transform:scale(-1)}
+.tpl12-header{text-align:center;margin-bottom:16px}
+.tpl12-om{font-size:24px;color:#8b0000}
+.tpl12-mantra{font-size:12px;color:#8b0000;font-weight:600}
+.tpl12-name{color:#8b0000;font-size:calc(24px * var(--hm-font-factor));font-family:'Cinzel',serif;border-bottom:2px solid #8b0000;padding-bottom:4px;display:inline-block;margin-bottom:10px}
+.tpl12-photo-frame{border:2px solid #8b0000;padding:3px;background:#fff;overflow:hidden}
+.tpl12-photo-frame img{width:100%;height:100%;object-fit:cover}
+.tpl12-sec{background:rgba(139,0,0,.08);border-left:4px solid #8b0000;color:#8b0000;padding:6px 12px;font-weight:700;font-size:calc(13px * var(--hm-font-factor));margin:14px 0 8px}
+.marriage-card-12 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+
+.marriage-card-13{background:linear-gradient(135deg,#fff3e0 0%,#ffcdd2 50%,#f8bbd0 100%);color:#333;font-family:'Montserrat',sans-serif;padding:28px 30px;border:10px solid #d4af37}
+.tpl13-pill{background:#e91e63;color:#fff;padding:5px 14px;border-radius:4px;font-size:calc(12px * var(--hm-font-factor));font-weight:700;display:inline-block;margin:12px 0 8px}
+.tpl13-photo-frame{border:2px solid #e91e63;overflow:hidden;background:#fff}
+.tpl13-photo-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-13 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+
+.marriage-card-14{background:#fbf3e7;color:#333;font-family:'Montserrat',sans-serif;padding:22px}
+.tpl14-inner{background:#fff9f0;border-radius:12px;padding:28px;box-shadow:0 4px 15px rgba(0,0,0,.05);min-height:100%;box-sizing:border-box}
+.tpl14-tag{color:#666;font-size:11px;letter-spacing:1px;font-weight:600;text-transform:uppercase}
+.tpl14-name{color:#2b6cb0;font-size:calc(22px * var(--hm-font-factor));font-weight:700;margin-top:2px}
+.tpl14-circle{border-radius:50%;border:3px solid #2b6cb0;overflow:hidden;background:#fff}
+.tpl14-circle img{width:100%;height:100%;object-fit:cover}
+.tpl14-sec{color:#2b6cb0;font-size:calc(14px * var(--hm-font-factor));font-weight:700;margin:14px 0 8px}
+.marriage-card-14 .bio-table td{font-size:calc(13px * var(--hm-font-factor))}
+
+/* Font scaling per template 9-14 */
+.hm-design-content .marriage-card-9 .hm-section-title{font-size:calc(16px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-9 .bio-table td{font-size:calc(13px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-10 .hm-section-title{font-size:calc(15px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-10 .bio-table td{font-size:calc(13px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-11 .tpl11-title{font-size:calc(22px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-11 .bio-table td{font-size:calc(13px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-12 .tpl12-name{font-size:calc(24px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-12 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-13 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-14 .tpl14-name{font-size:calc(22px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-14 .bio-table td{font-size:calc(13px * var(--hm-font-factor))}
+
+/* Photo size enforcement for 9-14 */
+.hm-design-content .tpl9-photo-frame,
+.hm-design-content .tpl10-photo-frame,
+.hm-design-content .tpl12-photo-frame,
+.hm-design-content .tpl13-photo-frame{width:var(--hm-photo-size) !important}
+.hm-design-content .tpl9-photo-frame{height:calc(var(--hm-photo-size)*1.28)}
+.hm-design-content .tpl10-photo-frame{height:calc(var(--hm-photo-size)*1.25)}
+.hm-design-content .tpl12-photo-frame{height:calc(var(--hm-photo-size)*1.24)}
+.hm-design-content .tpl13-photo-frame{height:calc(var(--hm-photo-size)*1.28)}
+.hm-design-content .tpl11-circle,
+.hm-design-content .tpl14-circle{width:var(--hm-photo-size);height:var(--hm-photo-size)}
+
+/* ============================================================
+   TEMPLATES 15–30
+   ============================================================ */
+.marriage-card-15,.marriage-card-16,.marriage-card-17,.marriage-card-18,.marriage-card-19,
+.marriage-card-20,.marriage-card-21,.marriage-card-22,.marriage-card-23,.marriage-card-24,
+.marriage-card-25,.marriage-card-26,.marriage-card-27,.marriage-card-28,.marriage-card-29,
+.marriage-card-30{padding:28px 32px;box-sizing:border-box;height:100%;overflow:hidden}
+
+.tpl15-bg{background:#faf3e3}
+.tpl15-border{border:14px solid #e8d5a3;box-shadow:inset 0 0 0 2px #c4a35a,inset 0 0 0 6px #faf3e3,inset 0 0 0 8px #c4a35a}
+.tpl15-header{text-align:center;margin-bottom:12px}
+.tpl15-ganesh{font-size:28px;color:#8b6914}
+.tpl15-mantra{font-size:13px;color:#6b4f12;font-weight:600}
+.tpl15-title{font-family:'Cinzel',serif;font-size:calc(26px * var(--hm-font-factor));color:#5c4010;margin-top:4px}
+.tpl15-frame{border:2px solid #c4a35a;padding:3px;background:#fff;overflow:hidden}
+.tpl15-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-15 .hm-section-title{text-align:left;font-family:'Cinzel',serif;color:#6b4f12;font-size:calc(15px * var(--hm-font-factor));margin:12px 0 6px}
+.marriage-card-15 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor));color:#4a3520}
+
+.tpl16-bg{background:linear-gradient(180deg,#fff7f9 0%,#fff 40%);border:2px solid #f3c6d4}
+.tpl16-om{text-align:center;font-size:28px;color:#1e3a5f}
+.tpl16-title{text-align:center;font-size:calc(20px * var(--hm-font-factor));font-weight:700;letter-spacing:3px;color:#1e3a5f;border-bottom:2px solid #3b82f6;display:table;margin:4px auto 14px;padding-bottom:4px}
+.tpl16-frame{border:2px solid #93c5fd;overflow:hidden;background:#fff}
+.tpl16-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-16 .hm-section-title{color:#1e3a5f;font-size:calc(14px * var(--hm-font-factor));border-bottom:2px solid #1e3a5f;display:inline-block;padding-bottom:2px}
+.marriage-card-16 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+
+.tpl17-border{border:10px solid #d4af37;box-shadow:inset 0 0 0 2px #f5e6b8;background:#fffaf0}
+.tpl17-title{font-family:'Cinzel',serif;font-size:calc(22px * var(--hm-font-factor));color:#8b6914;letter-spacing:2px}
+.tpl17-circle{border-radius:50%;border:3px solid #d4af37;overflow:hidden;background:#fff}
+.tpl17-circle img{width:100%;height:100%;object-fit:cover}
+.marriage-card-17 .hm-section-title{font-size:calc(13px * var(--hm-font-factor));color:#8b6914;letter-spacing:1px;margin:10px 0 6px}
+.marriage-card-17 .bio-table td{font-size:calc(12px * var(--hm-font-factor))}
+
+.tpl18-border{background:#f7f0e0;border:3px solid #c4a35a;box-shadow:inset 0 0 0 8px #f7f0e0,inset 0 0 0 10px #d4af37}
+.tpl18-title{text-align:center;font-family:'Cinzel',serif;font-size:calc(24px * var(--hm-font-factor));color:#8b5a2b;margin-bottom:12px}
+.tpl18-frame{border:2px solid #c4a35a;overflow:hidden;background:#fff}
+.tpl18-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-18 .hm-section-title{text-align:left;color:#8b5a2b;font-family:'Cinzel',serif;font-size:calc(15px * var(--hm-font-factor));margin:12px 0 6px}
+.marriage-card-18 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor));color:#4a3520}
+
+.tpl19-bg{background:linear-gradient(180deg,#f0fdf4 0%,#fff 50%);border:3px solid #86efac}
+.tpl19-title{text-align:center;font-family:'Cinzel',serif;font-size:calc(20px * var(--hm-font-factor));color:#166534;margin-bottom:4px}
+.tpl19-name{text-align:center;font-size:calc(18px * var(--hm-font-factor));font-weight:700;color:#14532d;margin-bottom:10px}
+.tpl19-frame{border:2px solid #4ade80;overflow:hidden;background:#fff}
+.tpl19-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-19 .hm-section-title{color:#166534;font-size:calc(13px * var(--hm-font-factor));margin:8px 0 4px}
+.marriage-card-19 .bio-table td{font-size:calc(12px * var(--hm-font-factor))}
+
+.tpl20-border{border:3px solid #7c4a2d;background:#faf6f0;box-shadow:inset 0 0 0 6px #faf6f0,inset 0 0 0 8px #a67c52}
+.tpl20-header{text-align:center}
+.tpl20-ganesh{font-size:26px;color:#7c4a2d}
+.tpl20-mantra{font-size:13px;color:#7c4a2d;font-weight:600}
+.tpl20-name{font-size:calc(20px * var(--hm-font-factor));font-weight:700;color:#5c3317;margin:8px 0}
+.tpl20-frame{border:2px solid #7c4a2d;overflow:hidden}
+.tpl20-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-20 .hm-section-title{color:#7c4a2d;font-size:calc(14px * var(--hm-font-factor));border-bottom:1px solid #a67c52;padding-bottom:2px}
+.marriage-card-20 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+
+.tpl21-border{border:12px solid #b91c1c;box-shadow:inset 0 0 0 3px #fef2f2;background:#fff7ed}
+.tpl21-gods{text-align:center;font-size:12px;color:#7f1d1d;font-weight:600;margin-bottom:6px}
+.tpl21-title{text-align:center;font-weight:700;color:#991b1b;font-size:calc(14px * var(--hm-font-factor));margin-bottom:8px}
+.tpl21-frame{border:2px solid #b91c1c;overflow:hidden}
+.tpl21-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-21 .hm-section-title{color:#991b1b;font-size:calc(13px * var(--hm-font-factor));text-align:left;margin:10px 0 4px}
+.marriage-card-21 .bio-table td{font-size:calc(12px * var(--hm-font-factor))}
+
+.tpl22-bg{background:#5c0a1a;color:#fde8c8;border:10px solid #d4af37;box-shadow:inset 0 0 0 2px #8b1538}
+.tpl22-title{text-align:center;font-family:'Cinzel',serif;font-size:calc(18px * var(--hm-font-factor));color:#f5d78e;margin-bottom:4px}
+.tpl22-name{text-align:center;font-size:calc(18px * var(--hm-font-factor));font-weight:700;color:#fff;margin-bottom:10px}
+.tpl22-frame{border:2px solid #d4af37;overflow:hidden;background:#fff}
+.tpl22-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-22 .hm-section-title{color:#f5d78e;font-size:calc(13px * var(--hm-font-factor));margin:8px 0 4px}
+.marriage-card-22 .bio-table td{font-size:calc(12px * var(--hm-font-factor));color:#fde8c8}
+.marriage-card-22 .bio-table td.colon{color:#f5d78e}
+
+.tpl23-border{background:#faf6e8;border:8px solid #d4af37;box-shadow:inset 0 0 0 2px #f5e6b8}
+.tpl23-badge{display:inline-block;background:#7c2d12;color:#fff;font-weight:700;font-size:calc(11px * var(--hm-font-factor));padding:4px 12px;margin:10px 0 6px;letter-spacing:.5px}
+.tpl23-frame{border:3px solid #d4af37;overflow:hidden;background:#fff}
+.tpl23-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-23 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor));color:#3f2a16}
+
+.tpl24-border{border:2px solid #c4a35a;background:#fffdf8}
+.tpl24-name{font-size:calc(20px * var(--hm-font-factor));font-weight:700;color:#7c2d12;margin-bottom:6px}
+.tpl24-bar{background:#7c2d12;color:#fff;padding:4px 10px;font-weight:700;font-size:calc(12px * var(--hm-font-factor));margin:10px 0 6px}
+.tpl24-photo img{width:100%;height:100%;object-fit:cover}
+.marriage-card-24 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+
+.tpl25-border{border-left:8px solid #f59e0b;border-right:8px solid #f59e0b;border-top:2px solid #fbbf24;border-bottom:2px solid #fbbf24;background:#fff}
+.tpl25-ganesh{text-align:center;font-size:14px;color:#b45309;font-weight:700;margin-bottom:8px}
+.tpl25-sec{color:#b45309;font-weight:700;font-size:calc(13px * var(--hm-font-factor));margin:8px 0 4px}
+.tpl25-circle{border-radius:50%;border:3px solid #f59e0b;overflow:hidden}
+.tpl25-circle img{width:100%;height:100%;object-fit:cover}
+.marriage-card-25 .bio-table td{font-size:calc(12px * var(--hm-font-factor))}
+
+.tpl26-border{border:3px solid #d4a574;background:#fffaf3;box-shadow:inset 0 0 0 6px #fffaf3,inset 0 0 0 8px #e8c9a0}
+.tpl26-title{text-align:center;font-size:calc(18px * var(--hm-font-factor));color:#8b5a2b;margin-bottom:4px}
+.tpl26-name{text-align:center;font-size:calc(18px * var(--hm-font-factor));font-weight:700;color:#5c3317;margin-bottom:10px}
+.tpl26-frame{border:2px solid #d4a574;overflow:hidden}
+.tpl26-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-26 .hm-section-title{color:#8b5a2b;font-size:calc(13px * var(--hm-font-factor))}
+.marriage-card-26 .bio-table td{font-size:calc(12px * var(--hm-font-factor))}
+
+.tpl27-border{background:#fff5f7;border:3px solid #f9a8d4;box-shadow:inset 0 0 0 6px #fff5f7,inset 0 0 0 8px #fbcfe8}
+.tpl27-badge{display:inline-block;background:#be185d;color:#fff;font-weight:700;font-size:calc(11px * var(--hm-font-factor));padding:4px 12px;margin:10px 0 6px}
+.tpl27-frame{border:2px solid #f9a8d4;overflow:hidden}
+.tpl27-frame img{width:100%;height:100%;object-fit:cover}
+.marriage-card-27 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+
+.tpl28-bg{background:linear-gradient(180deg,#9f1239 0%,#be123c 40%,#9f1239 100%);color:#fff;border:8px solid #d4af37;padding:20px}
+.tpl28-title{text-align:center;font-family:'Cinzel',serif;font-size:calc(22px * var(--hm-font-factor));color:#fef3c7;letter-spacing:2px;margin-bottom:12px}
+.tpl28-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tpl28-tag{background:#fef3c7;color:#9f1239;font-weight:700;font-size:calc(10px * var(--hm-font-factor));padding:3px 8px;margin:8px 0 4px;display:inline-block}
+.tpl28-photo{border:2px solid #fef3c7;overflow:hidden;background:#fff}
+.tpl28-photo img{width:100%;height:100%;object-fit:cover}
+.marriage-card-28 .bio-table td{font-size:calc(11.5px * var(--hm-font-factor));color:#fff}
+.marriage-card-28 .bio-table td.colon{color:#fef3c7}
+
+.tpl29-bg{background:#fef3e8;border:2px solid #c4a35a}
+.tpl29-header{text-align:center;background:linear-gradient(180deg,#e8d4f0 0%,#fef3e8 100%);padding:12px;margin:-28px -32px 12px;border-radius:0 0 50% 50% / 0 0 40px 40px}
+.tpl29-mantra{font-size:13px;color:#6b4f12;font-weight:600}
+.tpl29-circle{border-radius:50%;border:3px solid #d4af37;overflow:hidden;background:#fff}
+.tpl29-circle img{width:100%;height:100%;object-fit:cover}
+.tpl29-title{font-size:calc(14px * var(--hm-font-factor));color:#8b6914;font-weight:700}
+.tpl29-name{font-size:calc(20px * var(--hm-font-factor));font-weight:700;color:#5c4010;margin-bottom:8px}
+.marriage-card-29 .hm-section-title{color:#8b6914;font-size:calc(13px * var(--hm-font-factor))}
+.marriage-card-29 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+
+.tpl30-border{background:#faf6ee;border:2px solid #c4a35a;box-shadow:inset 0 0 0 6px #faf6ee,inset 0 0 0 8px #d4af37}
+.tpl30-name{font-size:calc(22px * var(--hm-font-factor));font-weight:700;color:#7c2d12;margin-bottom:6px}
+.tpl30-photo img{width:100%;height:100%;object-fit:cover}
+.tpl30-bar{border-left:4px solid #7c2d12;background:#f5e6d3;padding:4px 10px;font-weight:700;font-size:calc(12px * var(--hm-font-factor));color:#5c3317;margin:10px 0 6px}
+.marriage-card-30 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+
+/* ============================================================
+   Photo size enforcement for templates 9-30
+   ============================================================ */
+.hm-design-content .tpl9-photo-frame,
+.hm-design-content .tpl10-photo-frame,
+.hm-design-content .tpl12-photo-frame,
+.hm-design-content .tpl13-photo-frame,
+.hm-design-content .tpl15-frame,
+.hm-design-content .tpl16-frame,
+.hm-design-content .tpl18-frame,
+.hm-design-content .tpl19-frame,
+.hm-design-content .tpl20-frame,
+.hm-design-content .tpl21-frame,
+.hm-design-content .tpl22-frame,
+.hm-design-content .tpl23-frame,
+.hm-design-content .tpl26-frame,
+.hm-design-content .tpl27-frame,
+.hm-design-content .tpl28-photo,
+.hm-design-content .tpl30-photo,
+.hm-design-content .tpl11-circle,
+.hm-design-content .tpl14-circle,
+.hm-design-content .tpl17-circle,
+.hm-design-content .tpl24-photo,
+.hm-design-content .tpl25-circle,
+.hm-design-content .tpl29-circle {
+  width: var(--hm-photo-size) !important;
+  max-width: var(--hm-photo-size) !important;
+  aspect-ratio: 1 / 1.22 !important;
+  height: auto !important;
+}
+.hm-design-content .tpl11-circle,
+.hm-design-content .tpl14-circle,
+.hm-design-content .tpl17-circle,
+.hm-design-content .tpl25-circle,
+.hm-design-content .tpl29-circle {
+  aspect-ratio: 1 / 1 !important;
+}
+
+/* Font scaling for templates 15-30 */
+.hm-design-content .marriage-card-15 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-16 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-17 .bio-table td{font-size:calc(12px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-18 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-19 .bio-table td{font-size:calc(12px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-20 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-21 .bio-table td{font-size:calc(12px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-22 .bio-table td{font-size:calc(12px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-23 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-24 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-25 .bio-table td{font-size:calc(12px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-26 .bio-table td{font-size:calc(12px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-27 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-28 .bio-table td{font-size:calc(11.5px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-29 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+.hm-design-content .marriage-card-30 .bio-table td{font-size:calc(12.5px * var(--hm-font-factor))}
+
+.hm-design-content img{max-width:100%}
+
+/* ============================================================
+   PHOTO FIT / PHOTO POSITION — apply to every marriage image
+   Only set object-fit/position — do NOT override width/height
+   because wrappers already control size.
+   ============================================================ */
+.hm-design-content .hm-photo-img,
+.hm-design-content img[alt="Profile"] {
+  object-fit: var(--resume-photo-fit, cover) !important;
+  object-position: var(--resume-photo-position, center) !important;
+}
+
+/* ============================================================
+   TEMPLATE WIDTH — narrow / normal / wide
+   Apply to the inner card padding.
+   ============================================================ */
+.hm-design-content[data-template-width="narrow"] .hm-card,
+.hm-design-content[data-template-width="narrow"] .a4-marriage-template {
+  padding-left: 8% !important;
+  padding-right: 8% !important;
+}
+.hm-design-content[data-template-width="wide"] .hm-card,
+.hm-design-content[data-template-width="wide"] .a4-marriage-template {
+  padding-left: 2% !important;
+  padding-right: 2% !important;
+}
+
+/* ============================================================
+   CONTENT POSITION — only shift text + image inside the card.
+   ============================================================ */
+.hm-design-content .hm-text-shift {
+  transform: translateY(var(--hm-offset-y, 0mm));
+  will-change: transform;
+}

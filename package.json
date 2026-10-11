@@ -1,0 +1,35 @@
+{
+  "name": "cv-maker-ai",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/generate-seo.mjs && vite build",
+    "preview": "vite preview",
+    "lint": "oxlint",
+    "admin:claim": "node scripts/set-admin-claim.mjs"
+  },
+  "dependencies": {
+    "firebase": "^12.2.1",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "firebase-admin": "^13.5.0",
+    "@sparticuz/chromium": "^149.0.0",
+    "puppeteer-core": "^25.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "oxlint": "^0.15.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "vite": "^6.0.0"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}
