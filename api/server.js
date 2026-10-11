@@ -11,16 +11,18 @@ import { getServerPdfSnapshot, sanitizeResumeSnapshot, verifyServerPdfToken } fr
 function jsonError(res, status, message) { return res.status(status).json({ error: message }); }
 
 
+const DEFAULT_LAUNCH_CONFIG = { grandLaunchEnabled: false, animation: 'grand', durationMs: 5000, updatedAt: null };
+
 async function getLaunchConfigDoc() {
-  const snap = await db().collection('config').doc('launch').get();
-  if (!snap.exists) return { grandLaunchEnabled: false, animation: 'grand', durationMs: 5000 };
-  const data = snap.data() || {};
-  return {
-    grandLaunchEnabled: Boolean(data.grandLaunchEnabled),
-    animation: data.animation === 'grand' ? 'grand' : 'grand',
-    durationMs: 5000,
-    updatedAt: data.updatedAt || null,
-  };
+  try {
+    const snap = await db().collection('config').doc('launch').get();
+    if (!snap.exists) return { ...DEFAULT_LAUNCH_CONFIG };
+    const data = snap.data() || {};
+    return { grandLaunchEnabled: Boolean(data.grandLaunchEnabled), animation: 'grand', durationMs: 5000, updatedAt: data.updatedAt || null };
+  } catch (error) {
+    console.error('getLaunchConfig fallback:', error);
+    return { ...DEFAULT_LAUNCH_CONFIG, storageFallback: true };
+  }
 }
 
 async function saveLaunchConfig(req, res) {
@@ -37,17 +39,22 @@ async function saveLaunchConfig(req, res) {
 }
 
 async function getPricingDoc() {
-  const snap = await db().collection('config').doc('pricing').get();
-  if (!snap.exists) return { ...DEFAULT_PRICING };
-  const data = snap.data() || {};
-  const templates = data.templates && typeof data.templates === 'object' ? data.templates : {};
-  return {
-    basic: cleanPrice(data.basic, DEFAULT_PRICING.basic),
-    professional: cleanPrice(data.professional, DEFAULT_PRICING.professional),
-    customClone: cleanPrice(data.customClone, DEFAULT_PRICING.customClone),
-    templates,
-    updatedAt: data.updatedAt || null,
-  };
+  try {
+    const snap = await db().collection('config').doc('pricing').get();
+    if (!snap.exists) return { ...DEFAULT_PRICING };
+    const data = snap.data() || {};
+    const templates = data.templates && typeof data.templates === 'object' ? data.templates : {};
+    return {
+      basic: cleanPrice(data.basic, DEFAULT_PRICING.basic),
+      professional: cleanPrice(data.professional, DEFAULT_PRICING.professional),
+      customClone: cleanPrice(data.customClone, DEFAULT_PRICING.customClone),
+      templates,
+      updatedAt: data.updatedAt || null,
+    };
+  } catch (error) {
+    console.error('getPricing fallback:', error);
+    return { ...DEFAULT_PRICING, storageFallback: true };
+  }
 }
 
 function issueEntitlement(paymentId) {
@@ -566,31 +573,31 @@ ${rawText || [body.officeAutomation, body.techKnowledge, body.skills].filter(Boo
   }
 
   if (type === 'designSuggest') {
-    const hasExp = Boolean(stripHtml(body.workExperience || '').length > 40);
-    return `You are a resume design advisor. Recommend section order and a professional color/font theme for this candidate.
-
-Return ONLY valid JSON:
-{
-  "profile": "fresher|experienced",
-  "sectionOrder": ["personal", "summary", "experience", "education", "skills"],
-  "reason": "one short sentence why this order",
-  "paletteId": "navy|slate|teal|emerald|maroon|charcoal",
-  "primaryColor": "#hex",
-  "accentColor": "#hex",
-  "fontStyle": "sans-serif|serif",
-  "themeLabel": "short label e.g. Corporate Navy"
-}
-
-Rules:
-- Freshers / little experience: put education before experience.
-- Experienced: experience before education.
-- Finance/banking/govt → navy or charcoal; creative/design → teal; healthcare → emerald; traditional marriage-adjacent formal → maroon; general corporate → slate.
-- Output JSON only.
-
-Target role: ${targetRole || 'General'}
-Has substantial experience text: ${hasExp}
-Education: ${[body.gradCourse, body.gradCollege].filter(Boolean).join(', ')}
-Skills: ${stripHtml(body.skills || body.officeAutomation || '')}`;
+    const role = targetRole.toLowerCase();
+    const skills = stripHtml(body.skills || body.officeAutomation || '').toLowerCase();
+    const experience = stripHtml(body.workExperience || '');
+    const fresher = experience.length <= 40;
+    let paletteId = 'slate', primaryColor = '#334155', accentColor = '#0f766e', fontStyle = 'sans-serif', themeLabel = 'Modern Slate';
+    if (/finance|bank|banking|account|audit|tax|government|govt|civil|law|legal/.test(role)) {
+      paletteId = /government|govt|civil/.test(role) ? 'charcoal' : 'navy';
+      primaryColor = paletteId === 'navy' ? '#173b63' : '#374151';
+      accentColor = '#64748b';
+      themeLabel = paletteId === 'navy' ? 'Professional Navy' : 'Formal Charcoal';
+    } else if (/design|creative|ui|ux|artist|media|marketing|content/.test(role) || /figma|photoshop|illustrator/.test(skills)) {
+      paletteId = 'teal'; primaryColor = '#0f766e'; accentColor = '#14b8a6'; themeLabel = 'Creative Teal';
+    } else if (/health|medical|doctor|nurse|pharma|clinical/.test(role)) {
+      paletteId = 'emerald'; primaryColor = '#047857'; accentColor = '#10b981'; themeLabel = 'Healthcare Emerald';
+    } else if (/marriage|biodata|traditional/.test(role)) {
+      paletteId = 'maroon'; primaryColor = '#7f1d1d'; accentColor = '#b45309'; fontStyle = 'serif'; themeLabel = 'Traditional Maroon';
+    }
+    const sectionOrder = fresher
+      ? ['personal', 'summary', 'education', 'experience', 'skills']
+      : ['personal', 'summary', 'experience', 'skills', 'education'];
+    return {
+      __localDesignSuggestion: true, profile: fresher ? 'fresher' : 'experienced', sectionOrder,
+      reason: fresher ? 'Education is highlighted before experience for an early-career profile.' : 'Relevant experience is highlighted before education for an experienced profile.',
+      paletteId, primaryColor, accentColor, fontStyle, themeLabel,
+    };
   }
 
   if (type === 'bilingualBiodata') {
@@ -690,6 +697,9 @@ async function aiEnhance(req, res) {
   }
 
   try {
+    if (type === 'designSuggest') {
+      return res.status(200).json({ success: true, type, ...buildAiPrompt(type, req.body || {}) });
+    }
     const needsJson = AI_TYPES_JSON.has(type);
     const prompt = buildAiPrompt(type, req.body || {});
     const text = await callGemini(prompt, { json: needsJson, maxOutputTokens: 3072 });
@@ -735,8 +745,13 @@ async function resetPricing(req, res) {
 }
 
 export default async function handler(req, res) {
+  if (req.method === 'GET') return res.status(200).json({ ok: true, service: 'cvmaker-server', version: '2026-09-27' });
+  if (req.method === 'OPTIONS') { res.setHeader('Allow', 'GET, POST, OPTIONS'); return res.status(204).end(); }
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed.' });
   try {
+    if (typeof req.body === 'string') {
+      try { req.body = JSON.parse(req.body); } catch { return jsonError(res, 400, 'Invalid JSON request body.'); }
+    }
     const action = String(req.body?.action || '');
     if (action === 'getPricing') return res.status(200).json(await getPricingDoc());
     if (action === 'getLaunchConfig') return res.status(200).json(await getLaunchConfigDoc());
