@@ -53,8 +53,8 @@ function countProjectFiles(dir) {
 
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
-    // Ignore generated directories and Git
-    if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'dist' || entry.name === 'coverage') {
+    // Ignore generated directories, Git, and final ZIP archive
+    if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'dist' || entry.name === 'coverage' || entry.name.endsWith('.zip') || entry.name === 'bun.lock') {
       continue;
     }
 
