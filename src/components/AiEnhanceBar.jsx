@@ -922,3 +922,249 @@ export function MarriageCultureCard({ resumeData, onApply, lang = "en" }) {
     </div>
   );
 }
+
+
+/** Smart experience bullet generator — no fake metrics */
+export function SmartBulletCard({ resumeData, onApply, lang = "en" }) {
+  const [rough, setRough] = useState(() => {
+    const existing = String(resumeData?.workExperience || "").replace(/<[^>]+>/g, " ").trim();
+    return existing.length < 400 ? existing : "";
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [result, setResult] = useState(null);
+
+  const run = async () => {
+    setError("");
+    setResult(null);
+    const raw = (rough || resumeData?.workExperience || "").trim();
+    if (!raw) {
+      setError("Pehle rough experience text likhein (e.g. handled customers and billing)");
+      return;
+    }
+    setLoading(true);
+    try {
+      const data = await aiEnhance({
+        type: "smartBullet",
+        rawText: raw,
+        targetRole: resumeData?.role || "",
+        lang,
+      });
+      setResult(data);
+    } catch (e) {
+      setError(e?.message || "Bullet generation failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="rounded-xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-3 space-y-2">
+      <div className="flex items-center gap-1.5 text-amber-900 font-semibold text-xs">
+        <Wand2 size={14} />
+        Smart Bullet Generator
+      </div>
+      <p className="text-[10px] text-slate-500 leading-relaxed">
+        Rough line likho — AI professional bullets banayega. Fake numbers nahi invent karega; metric missing ho to poochhega.
+      </p>
+      <textarea
+        value={rough}
+        onChange={(e) => setRough(e.target.value)}
+        rows={3}
+        placeholder="e.g. handled customers and billing"
+        className="w-full text-sm border border-slate-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-amber-300 bg-white"
+      />
+      <button
+        type="button"
+        onClick={run}
+        disabled={loading}
+        className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-60 transition min-h-[40px]"
+      >
+        {loading ? <Loader2 size={14} className="animate-spin" /> : <Wand2 size={14} />}
+        Generate Professional Bullets
+      </button>
+      {error && (
+        <p className="text-[10px] text-red-600 flex items-start gap-1">
+          <AlertCircle size={12} className="mt-0.5 shrink-0" />
+          {error}
+        </p>
+      )}
+      {result?.bullets?.length > 0 && (
+        <div className="rounded-lg border border-slate-200 bg-white p-2.5 space-y-2">
+          <ul className="text-[12px] text-slate-800 space-y-1">
+            {result.bullets.map((b, i) => (
+              <li key={i} className="leading-snug">{b}</li>
+            ))}
+          </ul>
+          {result.needsMetrics && (
+            <div className="text-[11px] text-amber-900 bg-amber-50 border border-amber-100 rounded-md p-2">
+              <div className="font-semibold">Can you add a number?</div>
+              <ul className="list-disc pl-4 mt-1">
+                {(result.metricPrompts || []).map((m, i) => (
+                  <li key={i}>{m}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={() => onApply?.({ workExperience: result.bullets.join("\n") })}
+            className="w-full text-[11px] font-bold py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+          >
+            Apply to Experience
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * One-click AI AutoFit: content (summary/experience/skills) + photo polish + layout fit flags.
+ * Does NOT change template design/theme — only fits content to one page.
+ */
+export function AiAutoFitButton({
+  resumeData,
+  designSettings,
+  onApplyContent,
+  onApplyDesign,
+  lang = "en",
+  className = "",
+  compact = false,
+}) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [ok, setOk] = useState(false);
+
+  const run = async () => {
+    setError("");
+    setOk(false);
+    setLoading(true);
+    try {
+      // 1) AI fit text to single-page A4
+      const data = await aiEnhance({
+        type: "a4Fit",
+        mode: "fit",
+        summary: resumeData?.summary || "",
+        workExperience: resumeData?.workExperience || "",
+        skills: resumeData?.officeAutomation || resumeData?.techKnowledge || "",
+        officeAutomation: resumeData?.officeAutomation || "",
+        techKnowledge: resumeData?.techKnowledge || "",
+        targetRole: resumeData?.role || "",
+        lang,
+      });
+
+      const contentPatch = {
+        summary: data.summary ?? resumeData?.summary,
+        workExperience: data.workExperience ?? resumeData?.workExperience,
+        officeAutomation: data.skills || resumeData?.officeAutomation,
+      };
+
+      // 2) Photo polish if present
+      let photo = resumeData?.photo;
+      if (photo) {
+        try {
+          photo = await enhanceProfilePhoto(resumeData?.photoRaw || photo, {
+            size: 512,
+            brightness: 1.08,
+            contrast: 1.12,
+          });
+          contentPatch.photo = photo;
+        } catch (_) {
+          /* keep existing photo */
+        }
+      }
+
+      onApplyContent?.(contentPatch);
+
+      // 3) Layout fit presets (deterministic) — no theme/template change
+      if (onApplyDesign) {
+        const next = {
+          ...(designSettings || {}),
+          pageSize: "A4",
+          fitToOnePage: true,
+          manualMode: false,
+          fontSize: 10.5,
+          lineSpacing: 1.12,
+          contentScale: 100,
+          marginTop: 8,
+          marginBottom: 8,
+          marginLeft: 8,
+          marginRight: 8,
+          photoSize: 96,
+          photoFit: "cover",
+          photoPosition: "center",
+          sectionSpacing: "compact",
+          contentOffsetY: 0,
+        };
+        onApplyDesign(next);
+      }
+
+      setOk(true);
+      window.setTimeout(() => setOk(false), 2500);
+    } catch (e) {
+      setError(e?.message || "AI AutoFit failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (compact) {
+    return (
+      <div className={`relative ${className}`}>
+        <button
+          type="button"
+          onClick={run}
+          disabled={loading}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 hover:bg-sky-700 text-white shadow-sm disabled:opacity-60 transition min-h-[36px]"
+          title="AI AutoFit — text, photo, 1-page layout"
+        >
+          {loading ? <Loader2 size={14} className="animate-spin" /> : <Maximize2 size={14} />}
+          AI AutoFit
+        </button>
+        {ok && (
+          <span className="absolute -bottom-5 right-0 text-[10px] text-emerald-600 font-medium whitespace-nowrap">
+            Fitted ✓
+          </span>
+        )}
+        {error && (
+          <span className="absolute -bottom-5 right-0 text-[10px] text-red-600 max-w-[180px] truncate" title={error}>
+            {error}
+          </span>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className={`rounded-xl border border-sky-200 bg-gradient-to-br from-sky-50 to-white p-3 space-y-2 ${className}`}>
+      <div className="flex items-center gap-1.5 text-sky-900 font-semibold text-xs">
+        <Maximize2 size={14} />
+        AI AutoFit (1 Page)
+      </div>
+      <p className="text-[10px] text-slate-500 leading-relaxed">
+        Text, photo aur spacing ko AI + smart fit se ek A4 page me adjust karta hai. Template design change nahi hota.
+      </p>
+      <button
+        type="button"
+        onClick={run}
+        disabled={loading}
+        className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold bg-sky-600 text-white hover:bg-sky-700 disabled:opacity-60 min-h-[44px]"
+      >
+        {loading ? <Loader2 size={14} className="animate-spin" /> : <Maximize2 size={14} />}
+        {loading ? "Fitting…" : "AI AutoFit Everything"}
+      </button>
+      {ok && (
+        <p className="text-[10px] text-emerald-600 font-medium flex items-center gap-1">
+          <CheckCircle2 size={12} /> Content + photo + layout fitted to 1 page
+        </p>
+      )}
+      {error && (
+        <p className="text-[10px] text-red-600 flex items-start gap-1">
+          <AlertCircle size={12} className="mt-0.5 shrink-0" />
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}

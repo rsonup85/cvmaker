@@ -4,22 +4,22 @@ import { GrandLaunch } from "./components/GrandLaunch";
 import { ResumeRenderer } from "./ResumeRenderer";
 import { SEO } from "./SEO";
 import { DownloadModal } from "./components/DownloadModal";
-import { DesignSettings, DEFAULT_DESIGN, designToStyle, getPageDims } from "./components/DesignSettings";
+import { DEFAULT_DESIGN, getPageDims } from "./components/DesignSettings";
 import { NavbarLogo } from "./components/NavbarLogo";
 import { RichTextEditor } from "./components/RichTextEditor";
-import { AiCopilot } from "./components/AiCopilot";
 import {
   AiEnhanceBar,
   RoleTuneCard,
-  A4FitCard,
   BiodataGenerateCard,
   AtsOptimizerCard,
   TranslateCard,
   SkillsBreakCard,
-  DesignSuggestCard,
   MarriageCultureCard,
+  SmartBulletCard,
+  AiAutoFitButton,
   enhanceProfilePhoto,
 } from "./components/AiEnhanceBar";
+import { AiCopilot } from "./components/AiCopilot";
 import { getPricing, getLaunchConfig, getServerPdfData } from "./lib/serverApi";
 import { setPricingCache } from "./data/pricing";
 import { InstallPrompt } from "./components/InstallPrompt";
@@ -47,8 +47,6 @@ import {
   ArrowRight,
   ArrowLeft,
   Check,
-  Sparkles,
-  Menu,
 } from "lucide-react";
 
 
@@ -81,7 +79,6 @@ export default function App() {
   const { adminOpen, closeAdmin, onLogoClick } = useAdminTrigger();
   const [activeTab, setActiveTab] = useState("personal");
   const [mobileTab, setMobileTab] = useState("content");
-  const [aiPanelOpen, setAiPanelOpen] = useState(false);
   const [lang, setLangState] = useState(() => getLang());
   const t = (key) => tr(lang, key);
   const toggleLang = () => {
@@ -109,12 +106,6 @@ export default function App() {
     } catch (_) {}
     return { ...DEFAULT_DESIGN };
   });
-  const [designPanelOpen, setDesignPanelOpen] = useState(false);
-  useEffect(() => {
-    if (!designPanelOpen) return undefined;
-    const timer = window.setTimeout(() => setDesignPanelOpen(false), 8000);
-    return () => window.clearTimeout(timer);
-  }, [designPanelOpen, designSettings]);
   const [showGrandLaunch, setShowGrandLaunch] = useState(false);
   const [serverPdfMode, setServerPdfMode] = useState(false);
   const [serverPdfLoading, setServerPdfLoading] = useState(false);
@@ -125,8 +116,7 @@ export default function App() {
         setCreationType(null);
         setActiveTab("personal");
         setMobileTab("content");
-        setDesignPanelOpen(false);
-      }
+              }
     };
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
@@ -242,8 +232,7 @@ export default function App() {
     setSavedToast("All details saved ✓");
     setTimeout(() => setSavedToast(""), 2000);
     setIsModalOpen(false);
-    setDesignPanelOpen(false);
-    setMobileTab("preview");
+        setMobileTab("preview");
   };
 
   const objectiveOptions = [
@@ -339,8 +328,7 @@ export default function App() {
     setTemplateCategory("All");
     setActiveTab("personal");
     setMobileTab("content");
-    setDesignPanelOpen(false);
-  };
+      };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -400,12 +388,6 @@ export default function App() {
 
   const selectedTpl = TEMPLATES_CONFIG.find((t) => t.id === selectedTemplateId);
   const supportsPhoto = !!selectedTpl;
-
-  const applyAiPatch = (patch) => {
-    setResumeData((prev) => ({ ...prev, ...(patch || {}) }));
-    setSavedToast("AI changes applied ✓");
-    window.setTimeout(() => setSavedToast(""), 2200);
-  };
 
 
   const handleDownloadPDF = async (isPro, verifiedPayment = null) => {
@@ -672,7 +654,7 @@ export default function App() {
       ];
 
   const inputClass =
-    "w-full bg-white border border-gray-200 text-gray-800 p-2.5 text-sm rounded-lg outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition placeholder:text-gray-400";
+    "w-full bg-white border border-gray-200 text-gray-800 p-3 text-base sm:text-sm rounded-lg outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition placeholder:text-gray-400 min-h-[44px]";
   const labelClass = "text-xs font-semibold text-gray-700 block mb-1";
   const helperClass = "text-[11px] text-gray-400 mt-0.5 leading-snug";
   const selectOnFocus = (e) => {
@@ -699,8 +681,7 @@ export default function App() {
               setCreationType(null);
               setActiveTab("personal");
               setMobileTab("content");
-              setDesignPanelOpen(false);
-              try { window.history.back(); } catch (_) {}
+                            try { window.history.back(); } catch (_) {}
             }}
             className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shrink-0"
             title={t("backTitle")}
@@ -727,13 +708,6 @@ export default function App() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => setAiPanelOpen((v) => !v)}
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-violet-200 bg-violet-50 text-violet-700 text-xs font-bold hover:bg-violet-100 min-h-[40px]"
-          >
-            <Sparkles size={14} /> AI Copilot
-          </button>
-          <button
-            type="button"
             onClick={toggleLang}
             className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 text-[11px] font-bold hover:bg-slate-50"
             title={t("langHint")}
@@ -753,17 +727,37 @@ export default function App() {
       {/* Main Workspace */}
       <div className="flex flex-1 overflow-hidden relative">
         {/* Mobile Nav Tabs */}
-        <div className="lg:hidden fixed left-0 right-0 bottom-0 bg-white/95 backdrop-blur border-t border-slate-200 z-[60] grid grid-cols-4 gap-1 px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(15,23,42,.08)]">
-          <button type="button" onClick={() => { setAiPanelOpen(false); setMobileTab("sidebar"); }} className={`min-h-[52px] rounded-xl text-[10px] font-bold flex flex-col items-center justify-center gap-1 ${mobileTab === "sidebar" ? "bg-slate-100 text-slate-900" : "text-slate-500"}`}><Menu size={17} />Menu</button>
-          <button type="button" onClick={() => { setAiPanelOpen(false); setMobileTab("content"); }} className={`min-h-[52px] rounded-xl text-[10px] font-bold flex flex-col items-center justify-center gap-1 ${mobileTab === "content" ? "bg-blue-50 text-blue-700" : "text-slate-500"}`}><Edit3 size={17} />Edit</button>
-          <button type="button" onClick={() => { setAiPanelOpen(false); setMobileTab("preview"); }} className={`min-h-[52px] rounded-xl text-[10px] font-bold flex flex-col items-center justify-center gap-1 ${mobileTab === "preview" ? "bg-slate-100 text-slate-900" : "text-slate-500"}`}><Eye size={17} />Preview</button>
-          <button type="button" onClick={() => { setAiPanelOpen(false); setMobileTab("ai"); }} className={`min-h-[52px] rounded-xl text-[10px] font-bold flex flex-col items-center justify-center gap-1 ${mobileTab === "ai" ? "bg-violet-50 text-violet-700" : "text-slate-500"}`}><Sparkles size={17} />AI</button>
+        <div className="lg:hidden absolute top-0 left-0 right-0 bg-white border-b z-30 flex justify-around gap-1 p-2 text-[11px] sm:text-xs font-bold shadow-sm safe-area-top">
+          <button
+            onClick={() => setMobileTab("sidebar")}
+            className={`flex-1 px-2 py-2.5 rounded-xl transition flex flex-col items-center gap-0.5 min-h-[44px] ${
+              mobileTab === "sidebar" ? "bg-blue-50 text-blue-600" : "text-slate-600"
+            }`}
+          >
+            <span>{t("menu")}</span>
+          </button>
+          <button
+            onClick={() => setMobileTab("content")}
+            className={`flex-1 px-2 py-2.5 rounded-xl transition flex flex-col items-center gap-0.5 min-h-[44px] ${
+              mobileTab === "content" ? "bg-blue-50 text-blue-600" : "text-slate-600"
+            }`}
+          >
+            <span>{t("edit")}</span>
+          </button>
+          <button
+            onClick={() => setMobileTab("preview")}
+            className={`flex-1 px-2 py-2.5 rounded-xl transition flex flex-col items-center gap-0.5 min-h-[44px] ${
+              mobileTab === "preview" ? "bg-blue-50 text-blue-600" : "text-slate-600"
+            }`}
+          >
+            <span>{t("preview")}</span>
+          </button>
         </div>
 
         {/* Panel 1: Left Navigation Sidebar */}
         <aside
           className={`w-full lg:w-60 bg-white border-r border-slate-200 p-4 overflow-y-auto lg:block shrink-0 ${
-            mobileTab === "sidebar" ? "block pt-4 pb-24" : "hidden"
+            mobileTab === "sidebar" ? "block pt-12" : "hidden"
           }`}
         >
           <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">
@@ -829,7 +823,7 @@ export default function App() {
         {/* Panel 2: Dynamic Form / Templates Selector */}
         <section
           className={`w-full lg:w-80 bg-gray-50 border-r border-gray-200 p-4 overflow-y-auto lg:block shrink-0 ${
-            mobileTab === "content" ? "block pt-4 pb-24" : "hidden"
+            mobileTab === "content" ? "block pt-12" : "hidden"
           }`}
         >
           {/* Templates Grid */}
@@ -1168,6 +1162,16 @@ export default function App() {
               </h2>
               <p className="text-[11px] text-slate-500 mb-2 leading-relaxed">{t("optionalNote")}</p>
 
+              <AiCopilot
+                resumeData={resumeData}
+                lang={lang}
+                isMarriage={true}
+                onApply={(patch) => {
+                  setResumeData((prev) => ({ ...prev, ...patch }));
+                  setSavedToast("AI changes applied");
+                  window.setTimeout(() => setSavedToast(""), 2500);
+                }}
+              />
               <BiodataGenerateCard
                 resumeData={resumeData}
                 lang={lang}
@@ -1279,42 +1283,28 @@ export default function App() {
               <p className="text-[11px] text-slate-500 mb-2 leading-relaxed">
                 Short me batao aap kya job chahte ho. Sample select karke edit bhi kar sakte ho. AI se polish bhi kar sakte ho.
               </p>
-              <RoleTuneCard
+              <AiCopilot
                 resumeData={resumeData}
                 lang={lang}
-                onApply={(patch) => setResumeData((prev) => ({ ...prev, ...patch }))}
-              />
-              <A4FitCard
-                resumeData={resumeData}
-                lang={lang}
-                onApply={(patch) => setResumeData((prev) => ({ ...prev, ...patch }))}
-              />
-              <AtsOptimizerCard
-                resumeData={resumeData}
-                lang={lang}
-                onApply={(patch) => setResumeData((prev) => ({ ...prev, ...patch }))}
-              />
-              <TranslateCard
-                lang={lang}
-                getText={() => resumeData.summary || ""}
-                onApply={(text) => setResumeData((prev) => ({ ...prev, summary: text }))}
-              />
-              <DesignSuggestCard
-                resumeData={resumeData}
-                lang={lang}
-                onApplyTheme={(theme) => {
-                  const id = theme?.paletteId || "navy";
-                  const allowed = ["navy", "teal", "emerald", "slate", "charcoal", "burgundy", "indigo", "forest"];
-                  setColorPaletteId(allowed.includes(id) ? id : id === "maroon" ? "burgundy" : "navy");
-                  if (theme?.profile === "fresher") {
-                    setActiveTab("education");
-                  } else if (theme?.profile === "experienced") {
-                    setActiveTab("experience");
-                  }
-                  setSavedToast(theme?.themeLabel ? `Theme: ${theme.themeLabel}` : "Design applied");
+                isMarriage={false}
+                onApply={(patch) => {
+                  setResumeData((prev) => ({ ...prev, ...patch }));
+                  setSavedToast("AI changes applied");
                   window.setTimeout(() => setSavedToast(""), 2500);
                 }}
               />
+              <AiAutoFitButton
+                resumeData={resumeData}
+                designSettings={designSettings}
+                lang={lang}
+                onApplyContent={(patch) => {
+                  setResumeData((prev) => ({ ...prev, ...patch }));
+                  setSavedToast("AI AutoFit applied");
+                  window.setTimeout(() => setSavedToast(""), 2500);
+                }}
+                onApplyDesign={(next) => updateDesignSettings(next)}
+              />
+
               <div>
                 <label className={labelClass}>Ready-made samples</label>
                 <select
@@ -1385,6 +1375,15 @@ export default function App() {
               <p className="text-[11px] text-slate-500 mb-2 leading-relaxed">
                 Job title, company, year aur 2–3 bullet points. Freshers ho to internship / projects likh sakte ho. AI se professional bullets banao.
               </p>
+              <SmartBulletCard
+                resumeData={resumeData}
+                lang={lang}
+                onApply={(patch) => {
+                  setResumeData((prev) => ({ ...prev, ...patch }));
+                  setSavedToast("Experience bullets updated");
+                  window.setTimeout(() => setSavedToast(""), 2500);
+                }}
+              />
               <RichTextEditor
                 label="Experience details"
                 value={resumeData.workExperience}
@@ -1647,22 +1646,10 @@ export default function App() {
           )}
         </section>
 
-        {/* AI Copilot — mobile workspace */}
-        <section
-          className={`lg:hidden w-full bg-slate-50 overflow-hidden ${mobileTab === "ai" ? "block pb-20" : "hidden"}`}
-        >
-          <AiCopilot
-            resumeData={resumeData}
-            creationType={creationType}
-            lang={lang}
-            onApply={applyAiPatch}
-          />
-        </section>
-
         {/* Panel 3: Live Preview with Zoom */}
         <main
           className={`flex-1 bg-gray-200 flex flex-col overflow-hidden relative lg:flex ${
-            mobileTab === "preview" ? "flex pb-20" : "hidden"
+            mobileTab === "preview" ? "flex pt-12" : "hidden"
           }`}
         >
           {/* Zoom Controls */}
@@ -1675,11 +1662,17 @@ export default function App() {
               </span>
             </div>
             <div className="flex items-center gap-2 relative">
-              <DesignSettings
-                settings={designSettings}
-                onChange={updateDesignSettings}
-                isOpen={false}
-                onToggle={() => setDesignPanelOpen((v) => !v)}
+              <AiAutoFitButton
+                compact
+                resumeData={resumeData}
+                designSettings={designSettings}
+                lang={lang}
+                onApplyContent={(patch) => {
+                  setResumeData((prev) => ({ ...prev, ...patch }));
+                  setSavedToast("AI AutoFit applied");
+                  window.setTimeout(() => setSavedToast(""), 2500);
+                }}
+                onApplyDesign={(next) => updateDesignSettings(next)}
               />
               <span className="text-gray-500">{t("zoom")}: {zoomLevel}%</span>
               <button
@@ -1718,54 +1711,9 @@ export default function App() {
             </div>
           </div>
 
-          {/* Design panel: opens as a bottom sheet, but its height only
-              takes as much space as needed below the template. Max 55vh
-              to leave plenty of room for the preview above. */}
-          {designPanelOpen && (
-            <div
-              className="absolute z-40 left-0 right-0 bottom-0 bg-white border-t border-slate-200 shadow-[0_-10px_30px_rgba(15,23,42,0.15)] rounded-t-2xl"
-              style={{ maxHeight: "55vh" }}
-            >
-              {/* Drag handle + close bar */}
-              <div className="flex items-center justify-between px-4 py-2 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <span className="w-10 h-1 rounded-full bg-slate-300" />
-                  <span className="text-xs font-bold text-slate-700">Design Adjustments</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setDesignPanelOpen(false)}
-                  className="text-xs font-semibold text-slate-500 hover:text-slate-800 px-2 py-1"
-                >
-                  Close
-                </button>
-              </div>
-              <div className="overflow-y-auto" style={{ maxHeight: "calc(55vh - 44px)" }}>
-                <DesignSettings
-                  settings={designSettings}
-                  onChange={updateDesignSettings}
-                  isOpen={true}
-                  onToggle={() => setDesignPanelOpen(false)}
-                  className="border-0 rounded-none shadow-none"
-                  showColumnWidth={!isMarriage}
-                />
-              </div>
-            </div>
-          )}
+
         </main>
       </div>
-
-      {aiPanelOpen && (
-        <div className="hidden lg:block fixed inset-y-14 right-0 z-[70] w-[440px] max-w-[42vw] bg-white border-l border-slate-200 shadow-2xl">
-          <AiCopilot
-            resumeData={resumeData}
-            creationType={creationType}
-            lang={lang}
-            onApply={applyAiPatch}
-            onClose={() => setAiPanelOpen(false)}
-          />
-        </div>
-      )}
 
       <DownloadModal
         isOpen={isModalOpen}
