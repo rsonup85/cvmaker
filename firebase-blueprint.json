@@ -1,0 +1,123 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public profile and game statistics for a Dahla Pakad player",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "displayName": { "type": "string", "maxLength": 50, "minLength": 1 },
+        "avatar": { "type": "string", "maxLength": 50 },
+        "gamesPlayed": { "type": "number" },
+        "gamesWon": { "type": "number" },
+        "dahleCaptured": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "displayName", "gamesPlayed", "gamesWon", "dahleCaptured"]
+    },
+    "Room": {
+      "title": "Room",
+      "description": "Private lobby for Play With Friends multiplayer game",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 36 },
+        "code": { "type": "string", "maxLength": 8, "minLength": 4 },
+        "hostId": { "type": "string", "maxLength": 128 },
+        "hostName": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["waiting", "in_game", "finished", "abandoned"] },
+        "seats": {
+          "type": "array",
+          "description": "Array of 4 seats containing player info or null if empty"
+        },
+        "matchId": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "code", "hostId", "status", "seats"]
+    },
+    "MatchState": {
+      "title": "MatchState",
+      "description": "Public authoritative game state for an active 4-player match",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "roomId": { "type": "string", "maxLength": 64 },
+        "mode": { "type": "string", "enum": ["friends", "quick", "offline"] },
+        "phase": { "type": "string", "enum": ["find_dealer", "deal5", "trump", "deal_rest", "play", "game_over"] },
+        "players": { "type": "array" },
+        "dealer": { "type": "number" },
+        "trump": { "type": "string" },
+        "currentTurn": { "type": "number" },
+        "leader": { "type": "number" },
+        "ledSuit": { "type": "string" },
+        "trick": { "type": "array" },
+        "tablePile": { "type": "array" },
+        "tableRounds": { "type": "array" },
+        "dahlaPending": { "type": "boolean" },
+        "dahlaWinner": { "type": "number" },
+        "dahlaTriggered": { "type": "boolean" },
+        "lastWinner": { "type": "number" },
+        "dahleScore": { "type": "array" },
+        "cardScore": { "type": "array" },
+        "winnerTeam": { "type": "number" },
+        "gameEndReason": { "type": "string", "maxLength": 200 },
+        "log": { "type": "array" },
+        "turnDeadline": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "phase", "players", "currentTurn", "trick", "tablePile", "dahleScore", "cardScore"]
+    },
+    "PlayerHand": {
+      "title": "PlayerHand",
+      "description": "Private card hand for a specific player seat",
+      "type": "object",
+      "properties": {
+        "matchId": { "type": "string", "maxLength": 64 },
+        "playerIndex": { "type": "number" },
+        "uid": { "type": "string", "maxLength": 128 },
+        "cards": { "type": "array" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["matchId", "playerIndex", "uid", "cards"]
+    },
+    "MatchmakingTicket": {
+      "title": "MatchmakingTicket",
+      "description": "Queue entry for Quick Play matchmaking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "uid": { "type": "string", "maxLength": 128 },
+        "displayName": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["waiting", "matched", "cancelled"] },
+        "matchId": { "type": "string", "maxLength": 64 },
+        "roomId": { "type": "string", "maxLength": 64 },
+        "seat": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "uid", "displayName", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Public user profile and stats"
+    },
+    "/rooms/{roomId}": {
+      "schema": "Room",
+      "description": "Private lobby room configuration and seat states"
+    },
+    "/matches/{matchId}": {
+      "schema": "MatchState",
+      "description": "Public authoritative match state"
+    },
+    "/matches/{matchId}/hands/{seatIndex}": {
+      "schema": "PlayerHand",
+      "description": "Private player hand subcollection"
+    },
+    "/matchmakingQueue/{ticketId}": {
+      "schema": "MatchmakingTicket",
+      "description": "Quick Play matchmaking queue"
+    }
+  }
+}

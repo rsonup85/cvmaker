@@ -1,0 +1,6 @@
+{
+  "name": "Dahla Pakad — Multiplayer Card Game",
+  "description": "Authentic Dahla Pakad (Dehla Pakad) Indian trick-taking card game with Offline AI, Play With Friends private rooms, and Quick Play online matchmaking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

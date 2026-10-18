@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // User Profiles
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(userId) && request.auth.uid == userId;
+      allow update: if isSignedIn() && isValidId(userId) && request.auth.uid == userId;
+      allow delete: if false;
+    }
+
+    // Private Rooms
+    match /rooms/{roomId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(roomId);
+      allow update: if isSignedIn() && isValidId(roomId);
+      allow delete: if isSignedIn() && isValidId(roomId) && (resource.data.hostId == request.auth.uid || resource.data.seats.size() == 0);
+    }
+
+    // Public Match States
+    match /matches/{matchId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(matchId);
+      allow update: if isSignedIn() && isValidId(matchId);
+      allow delete: if false;
+
+      // Private Player Hands Subcollection
+      // STRICT PRIVACY: ONLY the player assigned to this seat can read their cards!
+      match /hands/{playerIndex} {
+        allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+        allow create: if isSignedIn() && isValidId(playerIndex);
+        allow update: if isSignedIn() && isValidId(playerIndex) && resource.data.uid == request.auth.uid;
+        allow delete: if false;
+      }
+    }
+
+    // Quick Play Matchmaking Queue
+    match /matchmakingQueue/{ticketId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(ticketId) && request.resource.data.uid == request.auth.uid;
+      allow update: if isSignedIn() && isValidId(ticketId);
+      allow delete: if isSignedIn() && isValidId(ticketId) && resource.data.uid == request.auth.uid;
+    }
+  }
+}
